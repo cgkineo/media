@@ -5,7 +5,6 @@ MediaUI.Input.ToggleFullScreen = MediaUI.Input.extend({
 
   constructor: function ToggleFullScreen(ui) {
     MediaUI.Input.apply(this, arguments);
-    bindAll(this, "onClick", "onDoubleTap");
     this.ui = ui;
     this.$els = this.ui.$all().filterByAttribute(this.ui.options.inputattribute, "togglefullscreen");
     this.$els.on({
@@ -16,7 +15,7 @@ MediaUI.Input.ToggleFullScreen = MediaUI.Input.extend({
     });
   },
 
-  onClick: function() {
+  onClick$bind: function() {
     var options = this.ui.options;
     if (this.ui.options.usefullwindow) {
       window.fullscreenPolyfill.useFullWindow = true;
@@ -37,7 +36,7 @@ MediaUI.Input.ToggleFullScreen = MediaUI.Input.extend({
     this.ui.el.requestFullscreen();
   },
 
-  onDoubleTap: function() {
+  onDoubleTap$bind: function() {
     if (Media.device.wasTouchedRecently) return;
     this.onClick();
   },

@@ -122,4 +122,8 @@ var Media = Class.extend({
   instanceEvents: true
 });
 
-window.Media = Media;
+if (typeof exports ==="undefined") {
+  window.Media = Media;
+} else {
+  exports.Media = Media;
+}

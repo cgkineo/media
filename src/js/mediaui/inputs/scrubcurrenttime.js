@@ -10,14 +10,6 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     MediaUI.Input.apply(this, arguments);
     this.ui = ui;
     this.$els = this.ui.$all().filterByAttribute(this.ui.options.inputattribute, "scrubcurrenttime");
-    bindAll(this, [
-      "onMouseDown",
-      "onMouseMove",
-      "onMouseUp",
-      "onTouchStart",
-      "onTouchMove",
-      "onTouchEnd"
-    ]);
     this.addEventListeners();
   },
 
@@ -42,7 +34,7 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     });
   },
 
-  onMouseDown: function(event) {
+  onMouseDown$bind: function(event) {
     if (!(event.buttons & 1)) return;
     event.stopPropagation();
     this.wasPlaying = !this.ui.source.paused;
@@ -52,7 +44,7 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     this.setTimeFromLeft(left);
   },
 
-  onMouseMove: function(event) {
+  onMouseMove$bind: function(event) {
     if (!this.isMouseDown) return;
     if (!(event.buttons & 1)) {
       this.onMouseUp();
@@ -62,14 +54,14 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     this.setTimeFromLeft(left);
   },
 
-  onMouseUp: function() {
+  onMouseUp$bind: function() {
     this.isMouseDown = false;
     if (!this.wasPlaying) return;
     this.wasPlaying = false;
     this.ui.source.play();
   },
 
-  onTouchStart: function(event) {
+  onTouchStart$bind: function(event) {
     this.wasPlaying = !this.ui.source.paused;
     this.inTouch = true;
     this.ui.source.pause();
@@ -77,13 +69,13 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     this.setTimeFromLeft(left);
   },
 
-  onTouchMove: function(event) {
+  onTouchMove$bind: function(event) {
     if (!this.inTouch) return;
     var left = event.touches[0].clientX;
     this.setTimeFromLeft(left);
   },
 
-  onTouchEnd: function(event) {
+  onTouchEnd$bind: function(event) {
     this.inTouch = false;
     if (!this.wasPlaying) return;
     event.stopPropagation();
@@ -92,12 +84,12 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
   },
 
   setTimeFromLeft: function(left) {
+    if (!this.ui.source.duration) return;
     var clientRect = this.$els[0].getBoundingClientRect();
     var width = this.$els[0].clientWidth;
     var x = clamp(0, left - clientRect.left, width);
     var ratio = x / width;
     var currentTime = this.ui.source.duration * ratio;
-    if (!this.ui.source.duration) return;
     this.ui.source.currentTime = currentTime;
     this.ui.media.dispatchEvent('timeupdate', {
       slow: true

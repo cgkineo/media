@@ -5,7 +5,6 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
 
   constructor: function TogglePlayPause(ui) {
     MediaUI.Input.apply(this, arguments);
-    bindAll(this, "onClick", "onTap");
     this.$els = ui.$all().filterByAttribute(ui.options.inputattribute, "toggleplaypause");
     if (!this.$els.length) return;
     this.ui = ui;
@@ -17,7 +16,7 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
     });
   },
 
-  onClick: function(event) {
+  onClick$bind: function(event) {
     event.stopPropagation();
     var $target = elements(event.target);
     if ($target.isHidden()) return;
@@ -25,9 +24,9 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
     this.toggle();
   },
 
-  onTap: function(event) {
+  onTap$bind: function(event) {
     var $target = elements(event.target);
-    var playpausetogglenotouch = $target.filterByAttribute(this.ui.options.inputattribute, "toggleplaypause:notouch");
+    var playpausetogglenotouch = $target.stack().filterByAttribute(this.ui.options.inputattribute, "toggleplaypausenotouch");
     if ($target.isHidden() || !playpausetogglenotouch.length || Media.device.wasTouchedRecently) return;
     this.toggle();
   },

@@ -1,5 +1,8 @@
 if ($ && $.fn) {
   // jQuery API
+  //
+  var Media = (typeof exports === "undefined" ? window : exports).Media
+  var MediaUI = (typeof exports === "undefined" ? window : exports).MediaUI;
 
   Media.JQueryDefaultOptions = Media.DefaultOptions.extend({
     constructor: function JQueryDefaultOptions() {
@@ -31,7 +34,9 @@ if ($ && $.fn) {
       if (item[Media._prop]) return;
       options = new Media.JQueryDefaultOptions(options);
       var media = new Media(item, options);
-      new MediaUI(media, options);
+      if (MediaUI) {
+        new MediaUI(media, options);
+      }
     });
     return $medias;
 

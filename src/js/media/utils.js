@@ -27,7 +27,6 @@ Media.utils.replace = replace;
 Media.utils.parseUnit = parseUnit;
 Media.utils.delay = delay;
 Media.utils.debounce = debounce;
-Media.utils.bindAll = bindAll;
 Media.utils.toggleClass = toggleClass;
 Media.utils.removeAttribute = removeAttribute;
 Media.utils.removeElement = removeElement;

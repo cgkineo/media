@@ -17,15 +17,16 @@ MediaUI.Output.CaptionsAria = MediaUI.Output.extend({
   onUpdate: function(event) {
     if (!this.$els.length) return;
     var options = this.ui.options;
-    MediaUI.languages.load(options.uilang||"en", function(language) {
+    MediaUI.languages.load(options, function(language) {
       var isCaptionsActive = this.ui.captions.isActive;
       var value;
       if (isCaptionsActive) {
-        value = template("${options.Captions}", language.hash);
+        value = replace("${Captions}", language.hash);
       } else {
-        value = template("${options.Captions}", language.hash);
+        value = replace("${captions off}", language.hash);
       }
       rafer.call(this.$els, "attr", "aria-label", value);
+      rafer.call(this.$els, "attr", "aria-pressed", isCaptionsActive);
     }.bind(this));
   },
 

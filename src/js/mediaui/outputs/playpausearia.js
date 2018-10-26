@@ -17,15 +17,16 @@ MediaUI.Output.PlayPauseAria = MediaUI.Output.extend({
   onUpdate: function(event) {
     if (!this.$els.length) return;
     var options = this.ui.options;
-    MediaUI.languages.load(options.uilang||"en", function(language) {
+    MediaUI.languages.load(options, function(language) {
       var isPaused = this.ui.source.paused;
       var value;
-      if (isPaused) {
-        value = template("${options.Pause}", language.hash);
+      if (!isPaused) {
+        value = replace("${Pause}", language.hash);
       } else {
-        value = template("${options.Play}", language.hash);
+        value = replace("${Play}", language.hash);
       }
       rafer.call(this.$els, "attr", "aria-label", value);
+      rafer.call(this.$els, "attr", "aria-pressed", !isPaused ? "true": "false");
     }.bind(this));
   },
 

@@ -1,5 +1,7 @@
 (function() {
 
+  if (window.fullscreenPolyfill) return;
+
   var debug = false;
 
   var isObject = function(obj) {

@@ -2,9 +2,6 @@
  * TextTrackList keeps all of the VTT tracks from the media component for use
  * in rendering captions or subtitles.
  * TODO: update track list when dom changes
- * @param  {[type]}
- * @param  {[type]}
- * @return {[type]}
  */
 Media.Class.TextTrackList = Media.Class.List.extend({
 

@@ -6,7 +6,6 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
 
   constructor: function Engage(ui) {
     MediaUI.Input.apply(this, arguments);
-    bindAll(this, "onUIReady", "onTap", "onBeginInput", "onEndInput", "engage", "disengage");
     this.ui = ui;
     this.setUpListeners();
   },
@@ -24,11 +23,11 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
     });
   },
 
-  onUIReady: function() {
+  onUIReady$bind: function() {
     this.engage();
   },
 
-  onBeginInput: function(event) {
+  onBeginInput$bind: function(event) {
     if (this.ui.media.el.paused) return;
     this.isInInput = true;
     if (Media.device.wasTouchedRecently) return;
@@ -36,14 +35,17 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
     this.engage();
   },
 
-  onTap: function(event) {
+  onTap$bind: function(event) {
     if (this.ui.media.el.paused) return;
     if (this.checkForceEngage(event)) return;
-    if (this.isEngaged) this.disengage();
-    else this.engage();
+    if (this.isEngaged && Media.device.wasTouchedRecently) {
+      this.disengage();
+      return;
+    }
+    this.engage();
   },
 
-  onEndInput: function(event) {
+  onEndInput$bind: function(event) {
     if (this.ui.media.el.paused) return;
     if (Media.device.wasTouchedRecently) return;
     if (this.checkForceEngage(event)) return;
@@ -61,13 +63,13 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
     return false;
   },
 
-  engage: function() {
+  engage$bind: function() {
     if (this.isEngaged) return;
     this.isEngaged = true;
     this.ui.trigger("engage");
   },
 
-  disengage: function() {
+  disengage$bind: function() {
     if (!this.isEngaged) return;
     this.isEngaged = false;
     this.ui.trigger("disengage");

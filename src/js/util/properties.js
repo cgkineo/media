@@ -15,6 +15,11 @@
  * @return {Object}     Return cls, modified.
  */
 var properties = function(cls, fromCls) {
+  var create = function(name, func) {
+    return function() {
+      return this['_'+name] = this['_'+name] || func.bind(this);
+    };
+  }
   var isForce = !!fromCls;
   fromCls = fromCls || cls;
   var props = {};
@@ -34,6 +39,7 @@ var properties = function(cls, fromCls) {
     }
     if (!begin) continue;
     var values = end.split("$");
+    var isBind = includes(values, "bind");
     var isGet = includes(values, "get");
     var isSet = includes(values, "set");
     var isValue = includes(values, "value");
@@ -48,12 +54,19 @@ var properties = function(cls, fromCls) {
     defs += isEnum ? 1 : 0;
     defs += isWriteable ? 1 : 0;
     defs += isConfigurable ? 1 : 0;
+    var value;
+    if (isBind) {
+      isGet = true;
+      isWriteable = false;
+      value = create(begin, fromCls[name]);
+    } else {
+      value = fromCls[name];
+    }
     var prop = props[begin] = props[begin] || {
-      value: fromCls[name]
+      value: value
     };
-    if (isValue) prop.value = fromCls[name];
-    if (isGet) prop.get = fromCls[name];
-    if (isSet) prop.set = fromCls[name];
+    if (isGet) prop.get = value;
+    if (isSet) prop.set = value;
     if (isEnum) prop.enumerable = true;
     if (isWriteable) prop.writable = true;
     if (isConfigurable) prop.configurable = true;

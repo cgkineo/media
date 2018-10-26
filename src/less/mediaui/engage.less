@@ -1,0 +1,36 @@
+.mediaui--controlsbarinner {
+  transition: transform 0.5s, background-color 0.5s;
+  transform: translateY(0);
+}
+
+.mediaui--blank {
+  transition: background-color 0.5s, bottom 0.5s;
+}
+
+:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing {
+
+  .mediaui--blank {
+    background-color: transparent;
+    bottom: 0;
+  }
+
+  .mediaui--captions {
+    bottom: 0;
+  }
+
+  .mediaui--controlsbarinner {
+    transform: translateY(100%);
+  }
+
+  .mediaui--bigplaypause {
+    opacity: 0;
+    cursor: none !important ;
+  }
+
+  .media--controls {
+    cursor: none !important ;
+  }
+
+  cursor: none !important ;
+
+}

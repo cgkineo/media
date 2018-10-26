@@ -10,7 +10,6 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
 
   constructor: function Taps(ui) {
     MediaUI.Input.apply(this, arguments);
-    bindAll(this, "onTouchStart", "onTouchEnd", "onMouseDown", "onMouseMove", "onMouseOut", "onMouseUp", "triggerSingleTap");
     this.ui = ui;
     this.$els = this.ui.$("*").filterByAttribute(this.ui.options.inputattribute, "taps");
     this.setUpListeners();
@@ -22,22 +21,30 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
     });
     this.$els.on({
       touchstart: this.onTouchStart,
-      mousedown: this.onMouseDown,
+      mousedown: this.onMouseDown
+    }, {
+      passive: false
+    });
+    this.$els.on({
       mousemove: this.onMouseMove,
       mouseout: this.onMouseOut
+    }, {
+      passive: true
     });
     elements(document.body).on({
       mouseup: this.onMouseUp,
       touchend: this.onTouchEnd
+    }, {
+      passive: false
     });
   },
 
-  onTouchStart: function(event) {
+  onTouchStart$bind: function(event) {
     this.isTouchDown = true;
     this.ui.trigger("begininput", event);
   },
 
-  onMouseDown: function(event) {
+  onMouseDown$bind: function(event) {
     if (Media.device.wasTouchedRecently) return;
     if (this.isTouchDown) return;
     if (!(event.buttons & 1)) return;
@@ -45,20 +52,20 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
     this.ui.trigger("begininput", event);
   },
 
-  onMouseMove: function(event) {
+  onMouseMove$bind: function(event) {
     if (Media.device.wasTouchedRecently) return;
     if (this.isMouseDown || this.isTouchDown || this.tapHandle) return;
     this.ui.trigger("begininput", event);
     this.ui.trigger("endinput", event);
   },
 
-  onMouseOut: function(event) {
+  onMouseOut$bind: function(event) {
     if (Media.device.wasTouchedRecently) return;
     if (this.isMouseDown || this.isTouchDown) return;
     this.ui.trigger("endinput", event);
   },
 
-  onMouseUp: function(event) {
+  onMouseUp$bind: function(event) {
     if (Media.device.wasTouchedRecently) return;
     if (!this.isMouseDown) return;
     this.isMouseDown = false;
@@ -66,14 +73,14 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
     this.onEndInput(event);
   },
 
-  onTouchEnd: function(event) {
+  onTouchEnd$bind: function(event) {
     if (!this.isTouchDown) return;
     this.isTouchDown = false;
     this.ui.trigger("endinput", event);
     this.onEndInput(event);
   },
 
-  onEndInput: function(event) {
+  onEndInput$bind: function(event) {
     this.stopSingleTap();
     if (this.isNoTaps(event)) return;
     this.taps++;
@@ -101,7 +108,7 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
     this.tapHandle = null;
   },
 
-  triggerSingleTap: function() {
+  triggerSingleTap$bind: function() {
     clearTimeout(this.tapHandle);
     this.tapHandle = null;
     if (this.taps === 0) return;
@@ -111,7 +118,7 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
 
   isNoTaps: function(event) {
     var $target = elements(event.target);
-    return $target.stack().filterByAttribute("stoptappropagation").length;
+    return $target.stack().filterByAttribute(this.ui.options.inputattribute, "stoptappropagation").length;
   },
 
   destroy: function() {

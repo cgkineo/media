@@ -180,6 +180,15 @@ var Elements = List.extend({
       toggleClass(element, name, value);
     });
     return this;
+  },
+
+  html: function(value) {
+    if (value === undefined) {
+      return this[0] && this[0].innerHTML;
+    }
+    this.forEach(function(element) {
+      element.innerHTML = value;
+    });
   }
 
 });

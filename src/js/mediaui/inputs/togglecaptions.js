@@ -5,7 +5,6 @@ MediaUI.Input.ToggleCaptions = MediaUI.Input.extend({
 
   constructor: function ToggleCaptions(ui) {
     MediaUI.Input.apply(this, arguments);
-    bindAll(this, "onClick");
     this.ui = ui;
     this.$els = this.ui.$all().filterByAttribute(this.ui.options.inputattribute, "togglecaptions");
     this.$els.on({
@@ -13,8 +12,8 @@ MediaUI.Input.ToggleCaptions = MediaUI.Input.extend({
     });
   },
 
-  onClick: function() {
-    if (this.ui.media.captions.isActive) {
+  onClick$bind: function() {
+    if (this.ui.captions.isActive) {
       this.ui.media.tracks.default.default = false;
       return;
     }

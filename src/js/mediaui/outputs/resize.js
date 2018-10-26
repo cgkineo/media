@@ -5,7 +5,6 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
 
   constructor: function ResizeComponent(ui) {
     MediaUI.Output.apply(this, arguments);
-    bindAll(this, "onResize");
     this.el = ui.$all().filterByAttribute(ui.options.outputattribute, "resize")[0];
     if (!this.el) return;
     this.ui = ui;
@@ -14,7 +13,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     });
   },
 
-  onResize: function(event) {
+  onResize$bind: function(event) {
     var uiDimensions = this.getUIDimensions();
     var uiOffsetParent = this.ui.el.offsetParent || window;
     var parentDimensions = new Media.Class.Dimensions(uiOffsetParent);
@@ -31,28 +30,29 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
   },
 
   applyStyles: function(el, parentDimensions, dimensions) {
-    el.style['object-fit'] = "fill";
+    var style = {};
+    style['object-fit'] = "fill";
     switch (dimensions.width.unit) {
       case "contain":
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full height
-          el.style.height = parentDimensions.height.value + parentDimensions.height.unit;
-          el.style.width = (parentDimensions.height.value * dimensions.ratio) + parentDimensions.height.unit;
+          style.height = "100%";//makeUnit(parentDimensions.height.value, parentDimensions.height.unit);
+          style.width = makeUnit((parentDimensions.height.value * dimensions.ratio), parentDimensions.height.unit);
         } else {
           // Full width
-          el.style.width = parentDimensions.width.value + parentDimensions.width.unit;
-          el.style.height = (parentDimensions.width.value / dimensions.ratio)  + parentDimensions.width.unit;
+          style.width = "100%";//makeUnit(parentDimensions.width.value, parentDimensions.width.unit);
+          style.height = makeUnit((parentDimensions.width.value / dimensions.ratio), parentDimensions.width.unit);
         }
         break;
       case "cover":
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full width
-          el.style.width = parentDimensions.width.value + parentDimensions.width.unit;
-          el.style.height = (parentDimensions.width.value / dimensions.ratio)  + parentDimensions.width.unit;
+          style.width = "100%";//makeUnit(parentDimensions.width.value, parentDimensions.width.unit);
+          style.height = makeUnit((parentDimensions.width.value / dimensions.ratio), parentDimensions.width.unit);
         } else {
           // Full height
-          el.style.height = parentDimensions.height.value + parentDimensions.height.unit;
-          el.style.width = (parentDimensions.height.value * dimensions.ratio) + parentDimensions.height.unit;
+          style.height = "100%";//makeUnit(parentDimensions.height.value, parentDimensions.height.unit);
+          style.width = makeUnit((parentDimensions.height.value * dimensions.ratio), parentDimensions.height.unit);
         }
         break;
       case "retain":
@@ -60,37 +60,37 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
         var width = clamp(0, parentDimensions.width.value, el.videoWidth || el.originalWidth || el.width);
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full height
-          el.style.height = height + parentDimensions.height.unit;
-          el.style.width = (height * dimensions.ratio) + parentDimensions.height.unit;
+          style.height = "100%";//makeUnit(height, parentDimensions.height.unit);
+          style.width = makeUnit((height * dimensions.ratio), parentDimensions.height.unit);
         } else {
           // Full width
-          el.style.width = width + parentDimensions.width.unit;
-          el.style.height = (width / dimensions.ratio)  + parentDimensions.width.unit;
+          style.width = "100%";//makeUnit(width, parentDimensions.width.unit);
+          style.height = makeUnit((width / dimensions.ratio), parentDimensions.width.unit);
         }
         break;
       case "fill":
         // Full height and width
-        el.style.height = parentDimensions.height.value + parentDimensions.height.unit;
-        el.style.width = parentDimensions.width.value + parentDimensions.width.unit;
+        style.height = "100%";//makeUnit(parentDimensions.height.value, parentDimensions.height.unit);
+        style.width = "100%";//makeUnit(parentDimensions.width.value, parentDimensions.width.unit);
         break;
       case "none":
-        el.style.height = "";
-        el.style.width = "";
+        style.height = "";
+        style.width = "";
         break;
       default:
         // Apply specific units unless auto
         if (dimensions.width.unit !== "auto") {
-          el.style.width = dimensions.width.value + dimensions.width.unit;
+          style.width = makeUnit(dimensions.width.value, dimensions.width.unit);
         }
         if (dimensions.height.unit !== "auto") {
-          el.style.height = dimensions.height.value + dimensions.height.unit;
+          style.height = makeUnit(dimensions.height.value, dimensions.height.unit);
         }
         // Calculate auto after applying united values
         if (dimensions.width.unit === "auto") {
-          el.style.width = (parentDimensions.height.value * dimensions.ratio)  + "px";
+          style.width = makeUnit((parentDimensions.height.value * dimensions.ratio), "px");
         }
         if (dimensions.height.unit === "auto") {
-          el.style.height = (parentDimensions.width.value / dimensions.ratio)  + "px";
+          style.height = makeUnit((parentDimensions.width.value / dimensions.ratio), "px");
         }
         break;
     }
@@ -135,21 +135,26 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     }
 
     if (isAbsolute) {
-      el.style.position = "absolute";
+      style.position = "absolute";
     } else {
-      el.style.position = "";
+      style.position = "";
     }
 
     if (isTranslate) {
-      el.style.transform = "translate("+translate.join(",")+")";
+      style.transform = "translate("+translate.join(",")+")";
     } else {
-      el.style.transform = "";
+      style.transform = "";
     }
 
-    el.style.top = size[0];
-    el.style.right = size[1];
-    el.style.bottom = size[2];
-    el.style.left = size[3];
+    style.top = size[0];
+    style.right = size[1];
+    style.bottom = size[2];
+    style.left = size[3];
+
+    // Perform this immediately as subsequent styles rely on these values.
+    for (var name in style) {
+      el.style[name] = style[name];
+    }
 
   },
 

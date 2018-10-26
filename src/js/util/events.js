@@ -24,8 +24,8 @@ var EventsArgumentsNotation = function(name, callback, subject, each, that) {
       var names = k.split(" ");
       for (var i = 0, l = names.length; i < l; i++) {
         var eventName = names[i];
-        var callback = object[k];
-        each.call(that, eventName, callback, subject);
+        var cb = object[k];
+        each.call(that, eventName, cb, subject);
       }
     }
   } else if (typeof name === "string") {

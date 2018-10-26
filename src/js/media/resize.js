@@ -1,7 +1,6 @@
 Media.Class.Resize = Media.Class.extend({
 
   constructor: function Resize(media) {
-    bindAll(this, "onWindowResize", "onFullScreenChanged");
     this.listenTo(Media, {
       "created": this.onCreated,
       "resize": this.onResize
@@ -19,7 +18,7 @@ Media.Class.Resize = Media.Class.extend({
     this.triggerMediaResize(media);
   },
 
-  onFullScreenChanged$write: function() {
+  onFullScreenChanged$write$bind: function() {
     this.resizeAllPlayers();
   },
 
@@ -28,7 +27,7 @@ Media.Class.Resize = Media.Class.extend({
     this.resizeAllPlayers();
   },
 
-  onWindowResize$write: function() {
+  onWindowResize$write$bind: function() {
     this.resizeAllPlayers();
   },
 

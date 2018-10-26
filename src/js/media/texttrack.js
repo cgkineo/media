@@ -42,6 +42,7 @@ Media.Class.TextTrack = Media.Class.extend({
     this.kind = this.el.getAttribute("kind");
     this._previousMode = this.el.mode;
     this.el.mode = "disabled";
+    if (this.el.track) this.el.track.mode = "disabled";
     this.fetch();
   },
 
@@ -64,6 +65,8 @@ Media.Class.TextTrack = Media.Class.extend({
 
   update$write: function() {
     if (!this.default) return;
+    this.el.mode = "disabled";
+    if (this.el.track) this.el.track.mode = "disabled";
     var ct = this.media.el.currentTime;
     var newLiveCues = this.cues.filter(function(cue) {
       return (cue.startTime <= ct && cue.endTime >= ct && !cue.isLive);
@@ -152,7 +155,7 @@ Media.Class.TextTrack = Media.Class.extend({
     // Remove NOTES and STYLES
     try {
       for (var i = 0, l = groups.length; i < l; i++) {
-        var group = groups[i];
+        group = groups[i];
         var isNote = (group.lines[0].indexOf("NOTE") === 0);
         if (isNote) continue;
 
@@ -213,7 +216,7 @@ Media.Class.TextTrack = Media.Class.extend({
     if (startpoint === -1) throw "Time declaration error, no end time";
     line = line.slice(startpoint);
 
-    var breakpoint = indexOfRegex(line, /[ ]{1}/);
+    breakpoint = indexOfRegex(line, /[ ]{1}/);
     if (breakpoint === -1) breakpoint = line.length;
     var end = line.slice(0, breakpoint).trim();
     line = line.slice(breakpoint);

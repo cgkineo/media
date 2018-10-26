@@ -5,7 +5,6 @@ MediaUI.Output.Captions = MediaUI.Output.extend({
 
   constructor: function Captions(ui) {
     MediaUI.Output.apply(this, arguments);
-    bindAll(this, "onTextTrackChange", "onCueEnter", "onCueExit");
     this.ui = ui;
     this.getElements();
     this.setUpListeners();
@@ -23,24 +22,24 @@ MediaUI.Output.Captions = MediaUI.Output.extend({
     });
   },
 
-  onTextTrackChange: function(event) {
+  onTextTrackChange$bind: function(event) {
     this.$els.forEach(function(el) {
       rafer.set(el, "innerHTML", "");
     });
   },
 
-  onCueEnter: function(event) {
+  onCueEnter$bind: function(event) {
     this.$els.forEach(function(el) {
       rafer.call(el, "appendChild", event.cue.getCueAsHTML());
     });
   },
 
-  onCueExit: function(event) {
+  onCueExit$bind: function(event) {
     this.$els.forEach(function(el) {
       var cueElements = el.querySelectorAll("#"+event.cue.id);
       for (var i = 0, l = cueElements.length; i < l; i++) {
         var cueElement = cueElements[i];
-        rafer.call(null, removeElement, cueElement);
+        rafer.call(removeElement, null, cueElement);
       }
     });
   },

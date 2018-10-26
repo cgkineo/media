@@ -9,7 +9,6 @@ var Rafer = Class.extend({
   currentRequestsLength: 0,
 
   constructor: function Rafer() {
-    bindAll(this, "frame");
     this.defineProperties({
       deferred$write: new Array(100),
       requests$write: new Array(100),
@@ -155,7 +154,7 @@ var Rafer = Class.extend({
     window.requestAnimationFrame(this.frame);
   },
 
-  frame$write: function() {
+  frame$write$bind: function() {
     var requests = [];
     var oldLength = this.currentRequestsLength;
     for (var i = 0, l = oldLength; i < l; i++) {

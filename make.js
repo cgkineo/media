@@ -1,77 +1,92 @@
 var fsg = require("fs-glob");
 var fs = require("fs");
 var path = require("path");
-var uglify = require("uglify-js");
 
 var config = {
     media: {
-        static: [
-            "util/css.js",
-            "util/html.js",
-            "util/javascript.js",
-            "util/arrays.js",
-            "util/numbers.js",
-            "util/objects.js",
-            "util/strings.js",
-            "util/properties.js",
-            "util/events.js",
-            "util/class.js",
-            "util/elements.js",
-            "util/rafer.js",
+        js: {
+            static: [
+                "util/css.js",
+                "util/html.js",
+                "util/javascript.js",
+                "util/arrays.js",
+                "util/numbers.js",
+                "util/objects.js",
+                "util/strings.js",
+                "util/properties.js",
+                "util/events.js",
+                "util/class.js",
+                "util/elements.js",
+                "util/rafer.js",
 
-            "media/media.js",
-            "media/defaultoptions.js",
-            "media/domevents.js",
-            "media/device.js"
-        ],
-        globs: [
-            "integration/*.js",
-            "media/*.js",
-            "util/*.js",
-            "integration/**/*.js",
-            "media/**/*.js",
-            "util/**/*.js",
-        ]
+                "media/media.js",
+                "media/defaultoptions.js",
+                "media/domevents.js",
+                "media/device.js"
+            ],
+            globs: [
+                "integration/*.js",
+                "media/*.js",
+                "util/*.js",
+                "integration/**/*.js",
+                "media/**/*.js",
+                "util/**/*.js",
+            ]
+        }
     },
     mediaui: {
-        static: [
-            "util/css.js",
-            "util/html.js",
-            "util/javascript.js",
-            "util/arrays.js",
-            "util/numbers.js",
-            "util/objects.js",
-            "util/strings.js",
-            "util/properties.js",
-            "util/events.js",
-            "util/class.js",
-            "util/elements.js",
-            "util/rafer.js",
+        js: {
+            static: [
+                "util/css.js",
+                "util/html.js",
+                "util/javascript.js",
+                "util/arrays.js",
+                "util/numbers.js",
+                "util/objects.js",
+                "util/strings.js",
+                "util/properties.js",
+                "util/events.js",
+                "util/class.js",
+                "util/elements.js",
+                "util/rafer.js",
 
-            "media/media.js",
-            "media/defaultoptions.js",
-            "media/domevents.js",
-            "media/device.js",
+                "media/media.js",
+                "media/defaultoptions.js",
+                "media/domevents.js",
+                "media/device.js",
 
-            "mediaui/component.js",
-            "mediaui/controller.js",
-            "mediaui/input.js",
-            "mediaui/output.js",
-            "mediaui/uilist.js",
-            "mediaui/polyfills/fullscreen-polyfill.js",
-            "mediaui/ui.js"
-        ],
-        globs: [
-            "*.js",
-            "**/*.js"
-        ]
+                "mediaui/component.js",
+                "mediaui/controller.js",
+                "mediaui/input.js",
+                "mediaui/output.js",
+                "mediaui/mediauilist.js",
+                "mediaui/polyfills/fullscreen-polyfill.js",
+                "mediaui/mediaui.js"
+            ],
+            globs: [
+                "*.js",
+                "**/*.js"
+            ]
+        },
+        less: {
+            globs: [
+                "mediaui/*.less",
+                "mediaui/**/*.less"
+            ]
+        },
+        assets: {
+            globs: [
+                "*",
+                "**"
+            ]
+        }
     }
 };
 
 
 function buildJS(name) {
 
-    var buildConfig = config[name];
+    var buildConfig = config[name].js;
 
     var globs = buildConfig.globs.slice(0).concat(buildConfig.static.map(function(name) {
         return "!"+name;
@@ -79,7 +94,7 @@ function buildJS(name) {
 
     var files = {};
     buildConfig.static.forEach(function(name) {
-        files[name] = fs.readFileSync("./src/js/"+name).toString();
+        files["./src/js/"+name] = true;
     });
 
     return fsg.stats({
@@ -91,7 +106,7 @@ function buildJS(name) {
 
             if (!stat) return resolve(files);
 
-            files[fsg.rel(stat.location, "./src/js")] = fs.readFileSync(stat.location).toString();
+            files["./"+fsg.rel(stat.location, "./")] = true;
 
             next();
 
@@ -99,42 +114,84 @@ function buildJS(name) {
 
     }).then((files)=>{
 
-        var result = uglify.minify(files, {
-            toplevel: true,
-            compress: {
-                passes: 3
-            },
-            mangle: {
-                properties: {
-                    regex: /_.*/,
-                    builtins : true
-                }
-            },
-            output: {
-                beautify: false
-            }
-        });
-        if (result.error) {
-            console.log(files['mediaui.css']);
-            console.log(result.error);
-            return;
-        }
+
+        fsg.mkdir(`./dist/${name}/`);
 
         var values = [];
         for (var k in files) values.push(files[k]);
 
-        var header = fs.readFileSync("header.js").toString();
-        var footer = fs.readFileSync("footer.js").toString();
+        var wrapper = fs.readFileSync("wrapper.js").toString().replace("%sourceMapFileName%", `${name}.min.js.map`);
 
-        fsg.mkdir("./dist");
-        fs.writeFileSync(`./dist/${name}.js`, header+values.join("\n")+footer);
-        fs.writeFileSync(`./dist/${name}.min.js`, header+result.code+footer);
+        const ClosureCompiler = require('google-closure-compiler').compiler;
+        const closureCompiler = new ClosureCompiler({
+            js: Object.keys(files),
+            create_source_map: `./dist/${name}/${name}.min.js.map`,
+            compilation_level: 'SIMPLE',
+            js_output_file: `./dist/${name}/${name}.min.js`,
+            language_in: 'ECMASCRIPT5_STRICT',
+            output_wrapper: wrapper,
+            source_map_location_mapping: ["./src/|./", "./dist/|./"],
+            source_map_include_content: true
+        });
+
+        const compilerProcess = closureCompiler.run(function(exitCode, stdOut, stdErr) {
+            if (stdErr) {
+                console.log(stdErr);
+                return;
+            }
+        });
 
     });
 
 }
 
+function buildLess(name) {
+    var less = require("less");
+    var buildConfig = config[name].less;
+
+    return fsg.stats({
+        globs: buildConfig.globs,
+        location: "./src/less"
+    }).then((stats)=>{
+
+        var source = "";
+        stats.forEach(function(file) {
+            source+= "@import '"+fsg.rel(file.location, "./")+"';\n";
+        });
+
+        less.render(source, {
+            sourceMap: {
+                sourceMapFileInline: false,
+                outputSourceFiles: true,
+                sourceMapURL: `./${name}/${name}.min.css.map`,
+                sourceMapBasepath: "src/"
+            }
+        }, function(error, output) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            fs.writeFileSync(`./dist/${name}/${name}.min.css`, output.css);
+            fs.writeFileSync(`./dist/${name}/${name}.min.css.map`, output.map);
+        });
+
+    });
+}
+
+function copyAssets(name) {
+    var buildConfig = config[name].assets;
+    return fsg.copy({
+        globs: buildConfig.globs,
+        location: `./src/assets/${name}/`,
+        to: `../../../dist/${name}/`
+    });
+}
+
 buildJS("media")
 .then(function() {
-    buildJS("mediaui");
+    return buildJS("mediaui");
+}).then(function() {
+    return buildLess("mediaui");
+}).then(function() {
+    return copyAssets("mediaui");
 });

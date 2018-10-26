@@ -23,11 +23,11 @@ MediaUI.Output.PlayPauseState = MediaUI.Output.extend({
     var isAtStart = this.isAtStart();
     var isAtEnd = this.isAtEnd();
     var isPaused = this.ui.source.paused;
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}playpausestate-playing", options), !isPaused);
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}playpausestate-paused", options), isPaused);
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}playpausestate-start", options), isAtStart);
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}playpausestate-end", options), isAtEnd);
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}playpausestate-middle", options), !isAtEnd && !isAtStart);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}playpausestate-playing", options), !isPaused);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}playpausestate-paused", options), isPaused);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}playpausestate-start", options), isAtStart);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}playpausestate-end", options), isAtEnd);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}playpausestate-middle", options), !isAtEnd && !isAtStart);
   },
 
   isAtStart: function() {

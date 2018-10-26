@@ -5,7 +5,6 @@ MediaUI.Output.EngageState = MediaUI.Output.extend({
 
   constructor: function EngageState(ui) {
     MediaUI.Output.apply(this, arguments);
-    bindAll(this, "onEngage", "onDisengage");
     this.$els = ui.$all().filterByAttribute(ui.options.outputattribute, "engagestate");
     if (!this.$els.length) return;
     this.ui = ui;
@@ -15,14 +14,14 @@ MediaUI.Output.EngageState = MediaUI.Output.extend({
     });
   },
 
-  onEngage: function() {
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}engagestate-engaged", this.ui.options), true);
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}engagestate-disengaged", this.ui.options), false);
+  onEngage$bind: function() {
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}engagestate-engaged", this.ui.options), true);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}engagestate-disengaged", this.ui.options), false);
   },
 
-  onDisengage: function() {
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}engagestate-disengaged", this.ui.options), true);
-    rafer.call(this.$els, "toggleClass", template("${options.classprefix}engagestate-engaged", this.ui.options), false);
+  onDisengage$bind: function() {
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}engagestate-disengaged", this.ui.options), true);
+    rafer.call(this.$els, "toggleClass", replace("${classprefix}engagestate-engaged", this.ui.options), false);
   },
 
   destroy: function() {

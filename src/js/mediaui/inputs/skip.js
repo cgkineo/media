@@ -10,7 +10,6 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
   constructor: function Skip(ui) {
     MediaUI.Input.apply(this, arguments);
     if (!ui.options.canskip) return;
-    bindAll(this, "onDoubleTap");
     this.interactions = [];
     this.clear = debounce(this.clear.bind(this), 500);
     this.ui = ui;
@@ -25,11 +24,10 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
     this.interactions.length = 0;
   },
 
-  onDoubleTap: function(event) {
+  onDoubleTap$bind: function(event) {
     if (!Media.device.wasTouchedRecently) return;
-    var kind = event.target.getAttribute(this.ui.options.inputattribute) || "";
-    var kinds = kind.split(" ");
-    if (!includes(kinds, "skip")) return;
+    var kind = elements(event.target).stack().filterByAttribute(this.ui.options.inputattribute, "skip");
+    if (!kind.length) return;
 
     event.preventDefault();
 

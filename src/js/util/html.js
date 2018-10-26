@@ -32,7 +32,7 @@ var removeAttribute = function(element, name) {
 
 var removeElement = function(element) {
   if (element.remove) return element.remove();
-  element.parentNode.removeChild(element);
+  if (element.parentNode) element.parentNode.removeChild(element);
 };
 
 var replaceWith = function(element, withElement) {

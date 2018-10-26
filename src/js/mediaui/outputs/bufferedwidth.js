@@ -27,16 +27,16 @@ MediaUI.Output.BufferedWidth = MediaUI.Output.extend({
     var duration = this.ui.source.duration;
     var buffered = this.ui.source.buffered;
     if (!buffered.length && this.ui.source.seekable.length) buffered = this.ui.source.seekable;
-    var length = 0;
+    var start = 0;
+    var lastEnd = 0;
     for (var b = 0, bl = buffered.length; b < bl; b++) {
-      var start = buffered.start(b);
       var end = buffered.end(b);
-      length += end-start;
+      if (lastEnd < end) lastEnd = end;
     }
-    var position = (length / duration) || 0;
+    var position = ((lastEnd - start) / duration) || 0;
     for (var i = 0, l = this.$els.length; i < l; i++) {
       var buffered = this.$els[i];
-      var value = buffered.offsetParent.clientWidth * position + "px";
+      var value = position * 100 + "%";
       rafer.set(buffered.style, "width", value);
     }
   },

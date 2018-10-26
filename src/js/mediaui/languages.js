@@ -1,28 +1,30 @@
 MediaUI.defineProperties({
   Languages: List.extend({
 
-    constructor: function Languages() {
-      this.load("en");
-    },
+    constructor: function Languages() {},
 
-    load$enum$write: function(langCode, callback) {
-      var language = this.search(langCode);
-      this.once("language:"+langCode, function(language) {
+    load$enum$write: function(options, callback) {
+      options = options || {};
+      options.uilangcode = options.uilangcode || "en";
+      options.uilangpath = options.uilangpath || "./lang/";
+      options.uilangextension = options.uilangextension || ".txt";
+      var language = this.search(options.uilangcode);
+      this.once("language:"+options.uilangcode, function(language) {
         callback && callback(language);
       });
       if (!language) {
         language = this.add({
-          langCode: langCode
+          langCode: options.uilangcode
         });
-        getUrl("./lang/"+langCode+".json", function(data) {
+        getUrl(options.uilangpath+options.uilangcode+options.uilangextension, function(data) {
           language.hash = JSON.parse(data);
         }.bind(this), function() {
-          throw "Could not find media player language `"+langCode+"`";
+          throw "Could not find media player language `"+options.uilangcode+"`";
         }.bind(this));
         return;
       }
       if (!language.isLoaded) return;
-      MediaUI.languages.trigger("language:"+langCode, language);
+      MediaUI.languages.trigger("language:"+options.uilangcode, language);
     },
 
     add$enum$write: function(options, hash) {
@@ -35,7 +37,7 @@ MediaUI.defineProperties({
       var found;
       for (var i = 0, l = this.length; i < l; i++) {
         var language = this[i];
-        if (language.langCode !== langCode) return;
+        if (language.langCode !== langCode) continue;
         found = language;
         break;
       }
@@ -52,5 +54,7 @@ MediaUI.defineProperties({
 });
 
 Media.DefaultOptions.add({
-  uilang: "en"
+  uilangcode: "en",
+  uilangpath: "./lang/",
+  uilangextension: ".txt"
 });

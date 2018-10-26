@@ -5,7 +5,6 @@ MediaUI.Input.ToggleMute = MediaUI.Input.extend({
 
   constructor: function ToggleMute(ui) {
     MediaUI.Input.apply(this, arguments);
-    bindAll(this, "onClick");
     this.ui = ui;
     this.$els = this.ui.$all().filterByAttribute(this.ui.options.inputattribute, "togglemute");
     this.$els.on({
@@ -13,7 +12,7 @@ MediaUI.Input.ToggleMute = MediaUI.Input.extend({
     });
   },
 
-  onClick: function() {
+  onClick$bind: function() {
     this.ui.source.muted = !this.ui.source.muted;
   },
 

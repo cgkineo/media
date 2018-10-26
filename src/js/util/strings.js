@@ -19,7 +19,7 @@ var includes = function(value, search, start) {
 };
 
 var replace = function(string, attributes, options) {
-  var options = options || { clean: true };
+  options = options || { clean: true };
   replace.cache = replace.cache || {};
   for (var k in attributes) {
     var regexStr = "\\$\\{"+k+"\\}";
@@ -29,25 +29,6 @@ var replace = function(string, attributes, options) {
   }
   if (options.clean) {
     string = string.replace(/\$\{[^\}]+\}/g, "");
-  }
-  return string;
-};
-
-var template = function(string, options) {
-  var regexStr = /\$\{[^\^\$}]*\}/;
-  var pieces = [];
-  while (string.match(regexStr)) {
-    while (string && (match = string.match(regexStr))) {
-      var start = match.index;
-      pieces.push(string.slice(0, start));
-      var end = match.index+match[0].length;
-      var evaluate = string.slice(start+2, end-1);
-      pieces.push(eval(evaluate))
-      string = string.slice(end);
-    }
-    pieces.push(string);
-    string = pieces.join("");
-    pieces.length = 0;
   }
   return string;
 };

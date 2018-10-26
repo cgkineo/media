@@ -1,0 +1,28 @@
+<div class="${classprefix}main" ${outputattribute}="fullscreenstate playpausestate captionsstate mutestate waitingstate posterstate engagestate">
+  <div class="${classprefix}resizecontainer" ${outputattribute}="resize mediaseat">
+    <div class="${classprefix}poster" ${outputattribute}="poster"></div>
+    <div class="${classprefix}waiting"></div>
+    <div class="${classprefix}skip" ${outputattribute}="skipnotification"></div>
+    <div class="${classprefix}blank"></div>
+    <div class="${classprefix}controls" ${outputattribute}="controlsstate" ${inputattribute}="taps skip toggleplaypausenotouch">
+      <div class="${classprefix}controlsbar" ${inputattribute}="engage stoptappropagation">
+        <div class="${classprefix}controlsbarinner">
+          <button class="${classprefix}littleplaypause" ${inputattribute}="toggleplaypause" ${outputattribute}="playpausearia"></button>
+          <div class="${classprefix}railduration" ${inputattribute}="scrubcurrenttime scrubcurrenttimearia" ${outputattribute}="currenttimearia">
+            <div class="${classprefix}raildurationinner">
+              <div class="${classprefix}railback"></div>
+              <div class="${classprefix}railbuffered" ${outputattribute}="bufferedwidth"></div>
+              <div class="${classprefix}railcurrent" ${outputattribute}="currenttimewidth"></div>
+              <div class="${classprefix}railfront"></div>
+            </div>
+          </div>
+          <button class="${classprefix}littlemute" ${outputattribute}="mutearia" ${inputattribute}="togglemute"></button>
+          <button class="${classprefix}littlecaptions" ${outputattribute}="captionsaria" ${inputattribute}="togglecaptions"></button>
+          <button class="${classprefix}littlefullscreen" ${outputattribute}="fullscreenaria" ${inputattribute}="togglefullscreen"></button>
+        </div>
+      </div>
+      <div class="${classprefix}captions" ${outputattribute}="captions"></div>
+      <button class="${classprefix}bigplaypause" ${inputattribute}="toggleplaypause engage" aria-hidden="true"></button>
+    </div>
+  </div>
+</div>
