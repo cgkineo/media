@@ -77,13 +77,10 @@
   <link rel="stylesheet" type="text/css" href="../dist/mediaui/mediaui.min.css">
 </head>
   <body>
-    <div class="video mode">
-      <video preload="none" id="c-40" src="c-40.mp4" loop="true" poster="c-40.jpg">
-        <track kind="captions" src="c-40-de.vtt" type="text/vtt" srclang="de" label="Deutsch">
-        <track kind="captions" src="c-40.vtt" type="text/vtt" srclang="en" label="English" default>
-      </video>
-    </div>
-  </body>
+    <video preload="none" id="c-40" src="c-40.mp4" loop="true" poster="c-40.jpg">
+      <track kind="captions" src="c-40-de.vtt" type="text/vtt" srclang="de" label="Deutsch">
+      <track kind="captions" src="c-40.vtt" type="text/vtt" srclang="en" label="English" default>
+    </video>
   <script>
     var $video = $('video').medias({
       uilangpath: "../dist/mediaui/lang/",
@@ -140,7 +137,7 @@
       // mediaposition: "center",
       // uisize: "contain",
       // uiposition: "none",
-      // usefullwindow: false,
+      // usefullwindow: true,
       // mediafullscreensize: "cover",
       // mediafullscreenposition: "center",
       // uifullscreensize: "fill",
@@ -148,4 +145,5 @@
     });
     $video.play();
   </script>
+  </body>
 </html>

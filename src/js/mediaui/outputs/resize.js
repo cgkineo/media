@@ -26,7 +26,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
       var uiOffsetParent = this.ui.el.offsetParent || window;
       var uiParentDimensions = new Media.Class.Dimensions(uiOffsetParent);
       var uiConfig = uiDimensions[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal'];
-      var uiStyle = this.getStyles(el, uiParentDimensions, uiConfig);
+      var uiStyle = this.getStyles(el, this.ui.source, uiParentDimensions, uiConfig);
       for (var k in uiStyle) {
         rafer.set(el.style, k, uiStyle[k]);
       }
@@ -41,7 +41,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
       var sourceOffsetParent = isUISourceParent ? this.ui.el.offsetParent : this.ui.source.offsetParent;
       var sourceParentDimensions =  new Media.Class.Dimensions(sourceOffsetParent || window);
       var sourceConfig = event[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal'];
-      var sourceStyle = this.getStyles(el, sourceParentDimensions, sourceConfig, {
+      var sourceStyle = this.getStyles(el, this.ui.source, sourceParentDimensions, sourceConfig, {
         transform: Media.device.isIE11 ? "scale(1.02)" : ""
       });
       for (var k in sourceStyle) {
@@ -50,7 +50,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     }.bind(this));
   },
 
-  getStyles: function(el, parentDimensions, dimensions, options) {
+  getStyles: function(el, source, parentDimensions, dimensions, options) {
     options = options || {};
     options.transform = options.transform || "";
 
@@ -80,15 +80,15 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
         }
         break;
       case "retain":
-        var height = clamp(0, parentDimensions.height.value, el.videoHeight || el.originalHeight || el.height);
-        var width = clamp(0, parentDimensions.width.value, el.videoWidth || el.originalWidth || el.width);
+        var height = clamp(0, parentDimensions.height.value, source.videoHeight || source.originalHeight || source.height);
+        var width = clamp(0, parentDimensions.width.value, source.videoWidth || source.originalWidth || source.width);
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full height
-          style.height = "100%";
+          style.height = makeUnit(height, parentDimensions.height.unit);
           style.width = makeUnit((height * dimensions.ratio), parentDimensions.height.unit);
         } else {
           // Full width
-          style.width = "100%";
+          style.width = makeUnit(width, parentDimensions.width.unit);
           style.height = makeUnit((width / dimensions.ratio), parentDimensions.width.unit);
         }
         break;
