@@ -65,16 +65,11 @@ var Media = Class.extend({
       fake: true
     });
     this.$el.dispatchEvent(name, options)
-    // var event = createEvent(name, options);
-    // event.fake = true;
-    // extend(event, options);
-    // this.el.dispatchEvent(event);
   },
 
   proxyEvent$write: function(event) {
     var isRealTimeUpdate = (!event.fake && event.type === "timeupdate");
     if (isRealTimeUpdate) return;
-    //this.trigger("*", event);
     var isRealResize = (!event.fake && event.type === "resize");
     if (!isRealResize) {
       this.trigger(event.type, event);
