@@ -38,8 +38,8 @@ MediaUI.Output.Captions = MediaUI.Output.extend({
     this.$els.forEach(function(el) {
       var cueElements = el.querySelectorAll("#"+event.cue.id);
       for (var i = 0, l = cueElements.length; i < l; i++) {
-        var cueElement = cueElements[i];
-        rafer.call(removeElement, null, cueElement);
+        var $cueElement = elements(cueElements[i]);
+        rafer.call($cueElement, "remove");
       }
     });
   },

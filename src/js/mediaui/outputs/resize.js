@@ -1,12 +1,14 @@
 MediaUI.Output.Resize = MediaUI.Output.extend({
 
   ui: null,
-  el: null,
+  $els: null,
+  $elsinner: null,
 
   constructor: function ResizeComponent(ui) {
     MediaUI.Output.apply(this, arguments);
-    this.el = ui.$all().filterByAttribute(ui.options.outputattribute, "resize")[0];
-    if (!this.el) return;
+    this.$els = ui.$all().filterByAttribute(ui.options.outputattribute, "resize");
+    this.$elsinners = ui.$all().filterByAttribute(ui.options.outputattribute, "resizeinner");
+    if (!this.$els.length) return;
     this.ui = ui;
     this.listenTo(this.ui.media, {
       "resize": this.onResize
@@ -14,44 +16,66 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
   },
 
   onResize$bind: function(event) {
-    var uiDimensions = this.getUIDimensions();
-    var uiOffsetParent = this.ui.el.offsetParent || window;
-    var parentDimensions = new Media.Class.Dimensions(uiOffsetParent);
-    this.applyStyles(this.el, parentDimensions, uiDimensions[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal']);
-
-    var isUISourceParent = Boolean(find(elements(this.ui.source).stack(), function(item) {
-      return item === this.ui.el;
-    }));
-    var sourceOffsetParent = isUISourceParent ?
-      this.ui.el.offsetParent :
-      this.ui.source.offsetParent;
-    parentDimensions =  new Media.Class.Dimensions(sourceOffsetParent || window);
-    this.applyStyles(this.ui.source, parentDimensions, event[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal']);
+    this.resize();
+    this.resizeinner();
   },
 
-  applyStyles: function(el, parentDimensions, dimensions) {
+  resize: function() {
+    this.$els.forEach(function(el) {
+      var uiDimensions = this.getUIDimensions();
+      var uiOffsetParent = this.ui.el.offsetParent || window;
+      var uiParentDimensions = new Media.Class.Dimensions(uiOffsetParent);
+      var uiConfig = uiDimensions[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal'];
+      var uiStyle = this.getStyles(el, uiParentDimensions, uiConfig);
+      for (var k in uiStyle) {
+        rafer.set(el.style, k, uiStyle[k]);
+      }
+    }.bind(this));
+  },
+
+  resizeinner: function() {
+    this.$elsinners.forEach(function(el) {
+      var isUISourceParent = Boolean(elements(this.ui.source).path().find(function(item) {
+        return item === this.ui.el;
+      }.bind(this)));
+      var sourceOffsetParent = isUISourceParent ? this.ui.el.offsetParent : this.ui.source.offsetParent;
+      var sourceParentDimensions =  new Media.Class.Dimensions(sourceOffsetParent || window);
+      var sourceConfig = event[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal'];
+      var sourceStyle = this.getStyles(el, sourceParentDimensions, sourceConfig, {
+        transform: Media.device.isIE11 ? "scale(1.02)" : ""
+      });
+      for (var k in sourceStyle) {
+        rafer.set(el.style, k, sourceStyle[k]);
+      }
+    }.bind(this));
+  },
+
+  getStyles: function(el, parentDimensions, dimensions, options) {
+    options = options || {};
+    options.transform = options.transform || "";
+
     var style = {};
     style['object-fit'] = "fill";
     switch (dimensions.width.unit) {
       case "contain":
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full height
-          style.height = "100%";//makeUnit(parentDimensions.height.value, parentDimensions.height.unit);
+          style.height = "100%";
           style.width = makeUnit((parentDimensions.height.value * dimensions.ratio), parentDimensions.height.unit);
         } else {
           // Full width
-          style.width = "100%";//makeUnit(parentDimensions.width.value, parentDimensions.width.unit);
+          style.width = "100%";
           style.height = makeUnit((parentDimensions.width.value / dimensions.ratio), parentDimensions.width.unit);
         }
         break;
       case "cover":
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full width
-          style.width = "100%";//makeUnit(parentDimensions.width.value, parentDimensions.width.unit);
+          style.width = "100%";
           style.height = makeUnit((parentDimensions.width.value / dimensions.ratio), parentDimensions.width.unit);
         } else {
           // Full height
-          style.height = "100%";//makeUnit(parentDimensions.height.value, parentDimensions.height.unit);
+          style.height = "100%";
           style.width = makeUnit((parentDimensions.height.value * dimensions.ratio), parentDimensions.height.unit);
         }
         break;
@@ -60,18 +84,18 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
         var width = clamp(0, parentDimensions.width.value, el.videoWidth || el.originalWidth || el.width);
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full height
-          style.height = "100%";//makeUnit(height, parentDimensions.height.unit);
+          style.height = "100%";
           style.width = makeUnit((height * dimensions.ratio), parentDimensions.height.unit);
         } else {
           // Full width
-          style.width = "100%";//makeUnit(width, parentDimensions.width.unit);
+          style.width = "100%";
           style.height = makeUnit((width / dimensions.ratio), parentDimensions.width.unit);
         }
         break;
       case "fill":
         // Full height and width
-        style.height = "100%";//makeUnit(parentDimensions.height.value, parentDimensions.height.unit);
-        style.width = "100%";//makeUnit(parentDimensions.width.value, parentDimensions.width.unit);
+        style.height = "100%";
+        style.width = "100%";
         break;
       case "none":
         style.height = "";
@@ -140,8 +164,13 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
       style.position = "";
     }
 
+    var transform = [options.transform];
     if (isTranslate) {
-      style.transform = "translate("+translate.join(",")+")";
+      transform.unshift("translate("+translate.join(",")+")");
+    }
+
+    if (transform.length) {
+      style.transform = transform.join(" ");
     } else {
       style.transform = "";
     }
@@ -151,10 +180,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     style.bottom = size[2];
     style.left = size[3];
 
-    // Perform this immediately as subsequent styles rely on these values.
-    for (var name in style) {
-      el.style[name] = style[name];
-    }
+    return style;
 
   },
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="../src/js/util/ajax.js"></script>
   <script src="../src/js/util/css.js"></script>
-  <script src="../src/js/util/html.js"></script>
-  <script src="../src/js/util/javascript.js"></script>
+  <script src="../src/js/util/functions.js"></script>
   <script src="../src/js/util/arrays.js"></script>
   <script src="../src/js/util/numbers.js"></script>
   <script src="../src/js/util/objects.js"></script>
@@ -55,6 +55,7 @@
   <script src="../src/js/mediaui/outputs/captions.js"></script>
   <script src="../src/js/mediaui/outputs/captionsstate.js"></script>
   <script src="../src/js/mediaui/outputs/captionsaria.js"></script>
+  <script src="../src/js/mediaui/outputs/controlbarorder.js"></script>
   <script src="../src/js/mediaui/outputs/playpausearia.js"></script>
   <script src="../src/js/mediaui/outputs/playpausestate.js"></script>
   <script src="../src/js/mediaui/outputs/bufferedwidth.js"></script>
@@ -77,7 +78,7 @@
 </head>
   <body>
     <div class="video mode">
-      <video preload="none" id="c-40" src="c-40.mp4" loop="true" poster="c-40.jpg">
+      <video preload="none" id="c-40" src="bbb_sunflower_1080p_60fps_normal.mp4" loop="true" poster="c-40.jpg">
         <track kind="captions" src="c-40-de.vtt" type="text/vtt" srclang="de" label="Deutsch">
         <track kind="captions" src="c-40.vtt" type="text/vtt" srclang="en" label="English" default>
       </video>
@@ -87,12 +88,19 @@
     var $video = $('video').medias({
       uilangpath: "../dist/mediaui/lang/",
       uilayoutpath: "../dist/mediaui/layout/",
+      uicontrolbarorder: [
+        "playpause",
+        "captions",
+        "mute",
+        "rail",
+        "fullscreen"
+      ],
     // fill width
       mediasize: "100% auto",
       mediaposition: "center",
       uisize: "100% auto",
       uiposition: "none",
-      usefullwindow: true,
+      usefullwindow: false,
       mediafullscreensize: "contain",
       mediafullscreenposition: "center",
       uifullscreensize: "contain",

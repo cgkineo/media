@@ -6,9 +6,9 @@ var config = {
     media: {
         js: {
             static: [
+                "util/ajax.js",
                 "util/css.js",
-                "util/html.js",
-                "util/javascript.js",
+                "util/functions.js",
                 "util/arrays.js",
                 "util/numbers.js",
                 "util/objects.js",
@@ -37,9 +37,9 @@ var config = {
     mediaui: {
         js: {
             static: [
+                "util/ajax.js",
                 "util/css.js",
-                "util/html.js",
-                "util/javascript.js",
+                "util/functions.js",
                 "util/arrays.js",
                 "util/numbers.js",
                 "util/objects.js",

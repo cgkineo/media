@@ -80,9 +80,9 @@ var MediaUI = Class.extend({
   processOptions$write: function() {
     this.originalAttributes = this.$source.attrs();
     if (this.options.uireplace) {
-      var mediaseat = this.$('*').filterByAttribute(this.options.outputattribute, "mediaseat")[0];
-      replaceWith(this.source, this.el);
-      prependElement(mediaseat, this.source);
+      var $mediaseat = this.$('*').filterByAttribute(this.options.outputattribute, "mediaseat");
+      this.$source.replaceWith(this.el);
+      $mediaseat.prepend(this.source);
     }
     if (this.options.videoplaysinline && this.source.tagName === "VIDEO") {
       this.source.setAttribute("playsinline", true);
@@ -117,7 +117,7 @@ var MediaUI = Class.extend({
 
   unprocessOptions$write: function() {
     if (this.options.uireplace) {
-      replaceWith(this.el, this.source);
+      this.$el.replaceWith(this.source);
     }
     this.$source.attrs(this.originalAttributes);
   },

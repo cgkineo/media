@@ -19,7 +19,7 @@ Media.Class.Resize = Media.Class.extend({
   },
 
   onFullScreenChanged$write$bind: function() {
-    this.resizeAllPlayers();
+    delay(this.resizeAllPlayers, 1);
   },
 
   onResize: function(media, event) {
@@ -31,7 +31,7 @@ Media.Class.Resize = Media.Class.extend({
     this.resizeAllPlayers();
   },
 
-  resizeAllPlayers$write: function() {
+  resizeAllPlayers$bind: function() {
     for (var i = 0, l = Media.players.length; i < l; i++) {
       var media = Media.players[i];
       this.triggerMediaResize(media);

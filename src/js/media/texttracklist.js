@@ -30,7 +30,11 @@ Media.Class.TextTrackList = Media.Class.List.extend({
       if (!lang || !src || tracks[lang]) return;
       tracks[lang] = new Media.Class.TextTrack(this.media, el);
     }, this);
-    this.addTracks(ObjectValues(tracks));
+    var textTracks = [];
+    for (var lang in tracks) {
+      textTracks.push(tracks[lang]);
+    }
+    this.addTracks(textTracks);
   },
 
   addTracks$write: function(tracks) {

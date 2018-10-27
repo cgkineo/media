@@ -6,10 +6,3 @@ var toArray = function(args, start) {
 var isArray = function(obj) {
   return Object.prototype.toString.call(obj) == '[object Array]';
 };
-
-var find = function(obj, callback) {
-  for (var i = 0, l = obj.length; i < l; i++) {
-    if (callback) return obj;
-  }
-  return null;
-};

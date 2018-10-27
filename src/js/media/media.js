@@ -1,6 +1,7 @@
 var Media = Class.extend({
 
   el: null,
+  $el: null,
   options: null,
 
   constructor: function Media(element, options) {
@@ -13,6 +14,7 @@ var Media = Class.extend({
 
     this.el = element;
     this.el[Media.propName] = this;
+    this.$el = elements(this.el);
 
     this.options = options || {};
     if (!(this.options instanceof Media.DefaultOptions)) {
@@ -59,10 +61,14 @@ var Media = Class.extend({
         slow: true
       });
     }
-    var event = createEvent(name, options);
-    event.fake = true;
-    extend(event, options);
-    this.el.dispatchEvent(event);
+    options = extend(options, {
+      fake: true
+    });
+    this.$el.dispatchEvent(name, options)
+    // var event = createEvent(name, options);
+    // event.fake = true;
+    // extend(event, options);
+    // this.el.dispatchEvent(event);
   },
 
   proxyEvent$write: function(event) {

@@ -10,6 +10,7 @@ var Elements = List.extend({
 
   filterByAttribute: function(attrName, filterValue) {
     var items = this.filter(function(item) {
+      if (!item.getAttribute) return;
       var attrValue = item.getAttribute(attrName);
       if (!attrValue) return;
       var attrValues = attrValue.split(" ");
@@ -21,6 +22,7 @@ var Elements = List.extend({
   filterByTypes: function(type) {
     var types = type.split(",").map(function(type) { return type.trim(); });
     var items = this.filter(function(item) {
+      if (!item.tagName) return;
       var typeValue = item.tagName.toLowerCase();
       if (includes(types, typeValue)) return true;
     });
@@ -36,8 +38,9 @@ var Elements = List.extend({
   },
 
   isHidden: function() {
-    var stack = this.stack();
-    return Boolean(stack.find(function(item) {
+    var path = this.path();
+    return Boolean(path.find(function(item) {
+      if (!(item instanceof Element)) return;
       var style = window.getComputedStyle(item);
       var isHidden = style.visibility == "hidden" ||
         style.display == "none" || style.opacity == 0;
@@ -45,20 +48,21 @@ var Elements = List.extend({
     }));
   },
 
-  stack: function(selector) {
-    var stack = this.parents();
-    stack.unshift(this[0]);
+  path: function(selector) {
+    var path = this.parents();
+    path.unshift(this[0]);
     if (selector) {
-      stack = stack.filter(function(item) {
+      path = path.filter(function(item) {
         return (item.matches(selector));
       });
     }
-    return stack;
+    return path;
   },
 
   parents: function(selector) {
     var parent = this[0];
     var parents = new Elements();
+    if (!parent) return parents;
     do {
       parent = parent.parentNode;
       if (parent) parents.add(parent);
@@ -71,6 +75,53 @@ var Elements = List.extend({
     return parents;
   },
 
+  children: function(selector) {
+    var element = this[0];
+    if (!element) return new Elements();
+    var children = new Elements(element.children);
+    if (selector) {
+      children = children.filter(function(item) {
+        return (item.matches(selector));
+      });
+    }
+    return children;
+  },
+
+  remove: function() {
+    this.forEach(function(element) {
+      if (element.remove) return element.remove();
+      if (element.parentNode) element.parentNode.removeChild(element);
+    });
+  },
+
+  replaceWith: function(withElement) {
+    var element = this[0];
+    if (!element) return this;
+    if (element.replaceWith) {
+      element.replaceWith(withElement);
+      return this;
+    }
+    var parent = element.parentNode;
+    for (var i = 0, l = parent.childNodes.length; i < l; i++) {
+      if (parent.childNodes[i] !== element) continue;
+      parent.insertBefore(withElement, element);
+      elements(element).remove();
+      return this;
+    }
+    return this;
+  },
+
+  prepend: function(element) {
+    var container = this[0];
+    if (!container) return this;
+    if (!container.childNodes.length) {
+      container.appendChild(element);
+      return this;
+    }
+    container.insertBefore(element, container.childNodes[0]);
+    return this;
+  },
+
   value: function() {
     return this[0].value;
   },
@@ -78,11 +129,11 @@ var Elements = List.extend({
   add: function(selector, subject) {
     this.selector = "";
     subject = subject || document;
-    if (selector instanceof HTMLElement) {
+    if (selector instanceof HTMLElement || selector === window || selector === document) {
       this.push(selector);
       return this;
     }
-    if (selector instanceof Array || selector instanceof NodeList) {
+    if (selector instanceof Array || selector instanceof NodeList || selector instanceof HTMLCollection) {
       for (var i = 0, l = selector.length; i < l; i++) {
         this.add(selector[i]);
       }
@@ -101,6 +152,7 @@ var Elements = List.extend({
   clone: function(deep) {
     var clones = [];
     for (var i = 0, l = this.length; i < l; i++) {
+      if (!this[i].cloneNode) continue;
       clones.push(this[i].cloneNode(deep));
     }
     return new Elements(clones, this.subject);
@@ -116,6 +168,7 @@ var Elements = List.extend({
       return this;
     }
     this.forEach(function(element) {
+      if (!element.addEventListener) return;
       element.addEventListener(name, callback, options);
     });
     return this;
@@ -129,8 +182,14 @@ var Elements = List.extend({
       return this;
     }
     this.forEach(function(element) {
+      if (!element.removeEventListener) return;
       element.removeEventListener(name, callback);
     });
+    return this;
+  },
+
+  append: function(element) {
+    this[0].appendChild(element);
     return this;
   },
 
@@ -148,7 +207,11 @@ var Elements = List.extend({
       return this;
     }
     this.forEach(function(element) {
-      removeAttribute(element, name);
+      if (element.removeAttribute) return element.removeAttribute(name);
+      if (element.attributes.removeNamedItem && element.attributes.getNamedItem(name)) {
+        return element.attributes.removeNamedItem(name);
+      }
+      element.setAttribute(name, "");
     });
     return this;
   },
@@ -170,14 +233,34 @@ var Elements = List.extend({
       return this;
     }
     this.forEach(function(element) {
+      if (!element.setAttribute) return;
       element.setAttribute(name, value);
     });
     return this;
   },
 
-  toggleClass: function(name, value) {
+  toggleClass: function(classNames, bool) {
     this.forEach(function(element) {
-      toggleClass(element, name, value);
+      switch (typeof classNames) {
+        case "string":
+          classNames = classNames.split(" ");
+          break;
+      }
+      bool = (bool === undefined) ? true : bool;
+      var classList = element.classList;
+      for (var n = 0, nl = classNames.length; n < nl; n++) {
+        var nameItem = classNames[n];
+        var found = false;
+        for (var i = 0, l = classList.length; i < l; i++) {
+          var classItem = classList[i];
+          if (classItem !== nameItem) continue;
+          found = true;
+        }
+        if (!found && bool) classList.add(nameItem);
+        else if (found && !bool) classList.remove(nameItem);
+      }
+      if (element.classList.length) return;
+      elements(element).removeAttribute("class");
     });
     return this;
   },
@@ -189,6 +272,30 @@ var Elements = List.extend({
     this.forEach(function(element) {
       element.innerHTML = value;
     });
+  },
+
+  dispatchEvent: function(name, options) {
+    var element = this[0];
+    options = defaults(options, {
+      bubbles: false,
+      cancelable: true
+    });
+    if (!Elements._ie11) {
+      try {
+        var event = new Event(name, options);
+        extend(event, options);
+        element.dispatchEvent(event);
+        return this;
+      } catch (e) {
+        Elements._ie11 = true;
+      }
+    }
+    if (!Elements._ie11) return;
+    var event = document.createEvent('Event');
+    event.initEvent(name, options.bubbles, options.cancelable);
+    extend(event, options);
+    element.dispatchEvent(event);
+    return this;
   }
 
 });

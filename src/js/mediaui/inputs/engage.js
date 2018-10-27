@@ -55,8 +55,8 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
   checkForceEngage: function(event) {
     if (event.type === "mouseout") return false;
     var $target = elements(event.target);
-    var stack = $target.stack().filterByAttribute(this.ui.options.inputattribute, "engage");
-    if (Boolean(stack.length) && !$target.isHidden()) {
+    var path = $target.path().filterByAttribute(this.ui.options.inputattribute, "engage");
+    if (Boolean(path.length) && !$target.isHidden()) {
       this.stopDisengage();
       return true;
     }

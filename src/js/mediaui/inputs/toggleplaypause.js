@@ -26,7 +26,7 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
 
   onTap$bind: function(event) {
     var $target = elements(event.target);
-    var playpausetogglenotouch = $target.stack().filterByAttribute(this.ui.options.inputattribute, "toggleplaypausenotouch");
+    var playpausetogglenotouch = $target.path().filterByAttribute(this.ui.options.inputattribute, "toggleplaypausenotouch");
     if ($target.isHidden() || !playpausetogglenotouch.length || Media.device.wasTouchedRecently) return;
     this.toggle();
   },

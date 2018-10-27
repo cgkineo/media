@@ -118,7 +118,7 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
 
   isNoTaps: function(event) {
     var $target = elements(event.target);
-    return $target.stack().filterByAttribute(this.ui.options.inputattribute, "stoptappropagation").length;
+    return $target.path().filterByAttribute(this.ui.options.inputattribute, "stoptappropagation").length;
   },
 
   destroy: function() {
