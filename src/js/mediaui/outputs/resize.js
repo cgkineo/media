@@ -13,6 +13,26 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     this.listenTo(this.ui.media, {
       "resize": this.onResize
     });
+    this.listenTo(this.ui.options, "change", this.onOptionsChange);
+  },
+
+  onOptionsChange: function(name, value, oldValue) {
+    switch (name) {
+      case "mediasize":
+      case "mediaposition":
+      case "mediaratio":
+      case "mediafullscreensize":
+      case "mediafullscreenposition":
+      case "mediafullscreenratio":
+      case "uisize":
+      case "uiposition":
+      case "uiratio":
+      case "uifullscreensize":
+      case "uifullscreenposition":
+      case "uifullscreenratio":
+        this.onResize(Media.resize.getDimensions(this.ui.media));
+        break;
+    }
   },
 
   onResize$bind: function(event) {

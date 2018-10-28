@@ -39,15 +39,16 @@ Media.Class.Resize = Media.Class.extend({
   },
 
   triggerMediaResize: function(media) {
+    media.dispatchEvent("resize", this.getDimensions(media));
+    media.dispatchEvent("postresize", this.getDimensions(media));
+  },
+
+  getDimensions: function(media) {
     var options = media.options;
-    media.dispatchEvent("resize", {
+    return {
       fullscreen: new Media.Class.Dimensions(options.mediafullscreensize, options.mediafullscreenratio, options.mediafullscreenposition),
       normal: new Media.Class.Dimensions(options.mediasize, options.mediaratio, options.mediaposition)
-    });
-    media.dispatchEvent("postresize", {
-      fullscreen: new Media.Class.Dimensions(options.mediafullscreensize, options.mediafullscreenratio, options.mediafullscreenposition),
-      normal: new Media.Class.Dimensions(options.mediasize, options.mediaratio, options.mediaposition)
-    });
+    };
   },
 
   removeEventListeners$write: function() {

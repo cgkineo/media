@@ -40,7 +40,10 @@ Media.DefaultOptions = Class.extend({
               value: null
             });
           }
+          var oldValue = this["_"+name];
           this["_"+name] = value;
+          if (oldValue == value) return;
+          this.trigger("change", name, value, oldValue);
         }
       });
       this.prototype[name] = value;
@@ -63,6 +66,7 @@ Media.DefaultOptions = Class.extend({
   }
 
 }, {
+  instanceEvents: true,
   inheritClassEnumerables: true
 });
 
