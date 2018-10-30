@@ -5,14 +5,12 @@
         <img ${outputattribute}="poster">
       </div>
     </div>
-    <div class="${classprefix}waiting"></div>
-    <div class="${classprefix}skip" ${outputattribute}="skipnotification"></div>
     <div class="${classprefix}blank"></div>
     <div class="${classprefix}controls" ${outputattribute}="controlsstate" ${inputattribute}="taps skip toggleplaypausenotouch">
       <div class="${classprefix}controlsbar" ${inputattribute}="engage stoptappropagation">
         <div class="${classprefix}controlsbarinner" ${outputattribute}="controlbarorder">
           <button class="${classprefix}littleplaypause" ${inputattribute}="toggleplaypause" ${outputattribute}="playpausearia" ${controlbarorderattribute}="playpause"></button>
-          <div class="${classprefix}railduration" ${inputattribute}="scrubcurrenttime scrubcurrenttimearia" ${outputattribute}="currenttimearia" ${controlbarorderattribute}="rail">
+          <div class="${classprefix}railduration" ${inputattribute}="scrubcurrenttime scrubcurrenttimearia" ${outputattribute}="currenttimearia" ${controlbarorderattribute}="rail" tabindex="0">
             <div class="${classprefix}raildurationinner">
               <div class="${classprefix}railback"></div>
               <div class="${classprefix}railbuffered" ${outputattribute}="bufferedwidth"></div>
@@ -26,6 +24,7 @@
         </div>
       </div>
       <div class="${classprefix}captions" ${outputattribute}="captions"></div>
+      <div class="${classprefix}waiting"></div>
       <button class="${classprefix}bigplaypause" ${inputattribute}="toggleplaypause engage" aria-hidden="true"></button>
     </div>
   </div>

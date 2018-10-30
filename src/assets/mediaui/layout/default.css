@@ -9,6 +9,36 @@
   display: none;
 }
 
+.mediaui--main.layout-default .mediaui--waiting {
+    font-family: MediaUI;
+    font-weight: normal;
+    font-style: normal;
+    height: 48px;
+    width: 48px;
+}
+
+.mediaui--main.layout-default .mediaui--waiting:before {
+    content: "\f117";
+    animation-name: mediaui-spinner;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    transform-origin: center;
+    animation-timing-function: linear;
+    font-size: 3em;
+    position: absolute;
+    top: 0.5em;
+    left: 0;
+}
+
+@keyframes mediaui-spinner {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .mediaui--main.layout-default.mediaui--poster {
   transition: opacity 0.5s;
   opacity: 1;

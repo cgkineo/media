@@ -244,6 +244,14 @@
 .mediaui--icon-finish:before {
   content: "\f116";
 }
+.mediaui--icon-spinner {
+  font-family: MediaUI;
+  font-weight: normal;
+  font-style: normal;
+}
+.mediaui--icon-spinner:before {
+  content: "\f117";
+}
 .mediaui--main {
   display: inline-block;
   line-height: 0;
@@ -320,4 +328,13 @@
   right: 0;
   bottom: 0;
 }
-/*# sourceMappingURL=./mediaui/mediaui.min.css.map */
+.mediaui--waiting {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.mediaui--waitingstate-inactive .mediaui--waiting {
+  display: none;
+}
+/*# sourceMappingURL=mediaui.min.css.map */

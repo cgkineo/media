@@ -23,7 +23,6 @@ MediaUI.Output.CurrentTimeAria = MediaUI.Output.extend({
       var duration = parseInt(this.ui.source.duration || 0);
       var ariaLabel = language.hash["Progress Bar"] + " " + language.hash["progress bar timing: currentTime={1} duration={2}"||""].replace("{1}", currentTime).replace("{2}", duration);
       rafer.call(this.$els, "attr", "role", "slider");
-      rafer.call(this.$els, "attr", "tabindex", "0");
       rafer.call(this.$els, "attr", "aria-valuemax", duration);
       rafer.call(this.$els, "attr", "aria-valuemin", 0);
       rafer.call(this.$els, "attr", "aria-valuenow", currentTime);

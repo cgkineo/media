@@ -163,7 +163,7 @@ function buildLess(name) {
             sourceMap: {
                 sourceMapFileInline: false,
                 outputSourceFiles: true,
-                sourceMapURL: `./${name}/${name}.min.css.map`,
+                sourceMapURL: `${name}.min.css.map`,
                 sourceMapBasepath: "src/"
             }
         }, function(error, output) {
