@@ -43,7 +43,7 @@ var Elements = List.extend({
       if (!(item instanceof Element)) return;
       var style = window.getComputedStyle(item);
       var isHidden = style.visibility == "hidden" ||
-        style.display == "none" || style.opacity == 0;
+        style.display == "none";// || style.opacity == 0;
       return isHidden;
     }));
   },

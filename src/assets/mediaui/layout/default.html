@@ -1,7 +1,9 @@
-<div class="${classprefix}main" ${outputattribute}="fullscreenstate playpausestate captionsstate mutestate waitingstate posterstate engagestate">
+<div class="${classprefix}main layout-${uilayoutname}" ${outputattribute}="fullscreenstate playpausestate captionsstate mutestate waitingstate posterstate engagestate">
   <div class="${classprefix}resizecontainer" ${outputattribute}="resize">
     <div class="${classprefix}resizecontainerinner" ${outputattribute}="resizeinner mediaseat">
-      <div class="${classprefix}poster" ${outputattribute}="poster"></div>
+      <div class="${classprefix}poster">
+        <img ${outputattribute}="poster">
+      </div>
     </div>
     <div class="${classprefix}waiting"></div>
     <div class="${classprefix}skip" ${outputattribute}="skipnotification"></div>

@@ -15,7 +15,6 @@ if ($ && $.fn) {
   });
 
   $.fn.medias = function(options) {
-
     // Get all media tags selected and make Media instances for them
     var $medias = this.find(Media.supportedTags);
     $medias = $medias.add(this.filter(Media.supportedTags));
@@ -44,8 +43,21 @@ if ($ && $.fn) {
 
   $.fn.play = function() {
     var $medias = this.find(Media.supportedTags);
-    $medias = $medias.add(Media.supportedTags);
+    $medias = $medias.add(this.filter(Media.supportedTags));
     $medias.each(function(index, item) {
+      if (!item.paused) return;
+      item.play && item.play();
+    });
+  };
+
+  $.fn.rewind = function() {
+    var $medias = this.find(Media.supportedTags);
+    $medias = $medias.add(this.filter(Media.supportedTags));
+    $medias.each(function(index, item) {
+      try {
+        item.currentTime = 0;
+      } catch (error) {}
+      if (!item.paused) return;
       item.play && item.play();
     });
   };
@@ -54,7 +66,17 @@ if ($ && $.fn) {
     var $medias = this.find(Media.supportedTags);
     $medias = $medias.add(this.filter(Media.supportedTags));
     $medias.each(function(index, item) {
+      if (item.paused) return;
       item.pause && item.pause();
+    });
+  };
+
+  $.fn.mute = function(bool) {
+    var $medias = this.find(Media.supportedTags);
+    $medias = $medias.add(this.filter(Media.supportedTags));
+    $medias.each(function(index, item) {
+      if (item.muted === bool) return;
+      item.muted = bool;
     });
   };
 

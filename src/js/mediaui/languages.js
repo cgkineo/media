@@ -13,9 +13,7 @@ MediaUI.defineProperties({
         callback && callback(language);
       });
       if (!language) {
-        language = this.add({
-          langCode: options.uilangcode
-        });
+        language = this.add(options.uilangcode);
         getUrl(options.uilangpath+options.uilangcode+options.uilangextension, function(data) {
           language.hash = JSON.parse(data);
         }.bind(this), function() {
@@ -27,8 +25,8 @@ MediaUI.defineProperties({
       MediaUI.languages.trigger("language:"+options.uilangcode, language);
     },
 
-    add$enum$write: function(options, hash) {
-      var language = new MediaUI.Language(options, hash);
+    add$enum$write: function(code, hash) {
+      var language = new MediaUI.Language(code, hash);
       this.push(language);
       return language;
     },

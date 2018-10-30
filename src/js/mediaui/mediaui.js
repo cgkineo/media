@@ -69,8 +69,7 @@ var MediaUI = Class.extend({
   },
 
   getRenderedTemplate$write: function() {
-    var template = this.options.uilayout.template;
-    template = replace(template, this.options);
+    var template = this.options.uilayout.template(this.options);
     if (!template) return;
     var element = document.createElement('div');
     element.innerHTML = template;

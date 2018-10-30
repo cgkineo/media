@@ -13,11 +13,19 @@ MediaUI.defineProperties({
         callback && callback(layout);
       });
       if (!layout) {
-        layout = this.add({
-          langCode: options.uilayoutname
-        });
-        getUrl(options.uilayoutpath+options.uilayoutname+options.uilayoutextension, function(data) {
-          layout.template = data;
+        layout = this.add(options.uilayoutname);
+        getUrl(options.uilayoutpath+options.uilayoutname+options.uilayoutstyleextension, function(data) {
+          var style = document.createElement("style");
+          var cssText = document.createTextNode(data)
+          style.appendChild(cssText);
+          elements("head").append(style);
+        }.bind(this), function() {
+          throw "Could not find media player layout `"+options.uilayoutname+"`";
+        }.bind(this));
+        getUrl(options.uilayoutpath+options.uilayoutname+options.uilayouttemplateextension, function(data) {
+          layout.template = function(options) {
+            return replace(data, options);
+          };
         }.bind(this), function() {
           throw "Could not find media player layout `"+options.uilayoutname+"`";
         }.bind(this));
@@ -27,17 +35,17 @@ MediaUI.defineProperties({
       MediaUI.layouts.trigger("layout:"+options.uilayoutname, layout);
     },
 
-    add$enum$write: function(options, template) {
-      var layout = new MediaUI.Layout(options, template);
+    add$enum$write: function(name, template) {
+      var layout = new MediaUI.Layout(name, template);
       this.push(layout);
       return layout;
     },
 
-    search$enum$write: function(langCode) {
+    search$enum$write: function(layoutName) {
       var found;
       for (var i = 0, l = this.length; i < l; i++) {
         var layout = this[i];
-        if (layout.langCode !== langCode) continue;
+        if (layout.layoutName !== layoutName) continue;
         found = layout;
         break;
       }
@@ -57,5 +65,6 @@ Media.DefaultOptions.add({
   uilayout: null,
   uilayoutpath: "./layout/",
   uilayoutname: "default",
-  uilayoutextension: ".html"
+  uilayouttemplateextension: ".html",
+  uilayoutstyleextension: ".css"
 });

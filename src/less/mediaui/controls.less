@@ -12,8 +12,6 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: @little-button-size;
-  background-color: rgba(255, 255, 255, 0.42);
 }
 
 .mediaui--controlsbar {
@@ -28,20 +26,14 @@
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
-  padding: 0 5px;
-  background-color: rgba(255, 255, 255, 0.42);
 }
 
 .mediaui--bigplaypause {
   position:  absolute;
   top: 50%;
   left: 50%;
-  height: 82px;
-  width: 82px;
   transform:  translate(-50%, -50%);
   opacity: 1;
-  font-size: 4em;
-  background-color: transparent;
   border: 0;
 }
 
@@ -49,43 +41,9 @@
 .mediaui--littlemute,
 .mediaui--littlecaptions,
 .mediaui--littlefullscreen {
-  height: @little-button-size;
-  width: @little-button-size;
-  font-size: 2em;
   padding: 0;
   margin: 0;
-  background-color: transparent;
   border: 0;
-}
-
-.mediaui--bigplaypause,
-.mediaui--littleplaypause {
-  .mediaui--playpausestate-playing & {
-    .mediaui--icon-pause;
-  }
-  .mediaui--playpausestate-paused & {
-    .mediaui--icon-play;
-  }
-}
-
-.mediaui--littlemute {
-  .mediaui--icon-volume-high;
-  .mediaui--mutestate-muted & {
-    .mediaui--icon-volume-mute;
-  }
-}
-
-.mediaui--littlecaptions {
-  .mediaui--icon-captions-off;
-  .mediaui--captionsstate-active & {
-    .mediaui--icon-captions;
-  }
-}
-
-.mediaui--littlefullscreen {
-  .mediaui--icon-fullscreen-enter;
-  .mediaui--fullscreenstate-browser &,
-  .mediaui--fullscreenstate-fullwindow & {
-    .mediaui--icon-fullscreen-exit;
-  }
+  line-height: inherit;
+  min-height: inherit;
 }

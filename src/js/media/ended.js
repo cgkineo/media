@@ -32,7 +32,7 @@ Media.Class.Ended = Media.Class.extend({
       if (!media.el) return;
       if (media.hasFiredEnded) return;
       if (!this.isEnded(media)) return;
-      media.el.dispatchEvent(createEvent('ended'));
+      media.dispatchEvent('ended');
     }.bind(this), 150);
   },
 

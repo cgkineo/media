@@ -3,6 +3,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
   ui: null,
   $els: null,
   $elsinner: null,
+  initial: true,
 
   constructor: function ResizeComponent(ui) {
     MediaUI.Output.apply(this, arguments);
@@ -60,7 +61,11 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     this.$els.forEach(function(el) {
       var uiStyle = this.getStyles(el, this.ui.source, uiParentDimensions, uiConfig);
       for (var k in uiStyle) {
-        rafer.set(el.style, k, uiStyle[k]);
+        if (!this.initial) {
+          rafer.set(el.style, k, uiStyle[k]);
+        } else {
+          el.style[k] = uiStyle[k];
+        }
       }
     }.bind(this));
 
@@ -109,9 +114,16 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
         transform: Media.device.isIE11 ? "scale(1.02)" : ""
       });
       for (var k in sourceStyle) {
-        rafer.set(el.style, k, sourceStyle[k]);
+        if (!this.initial) {
+          rafer.set(el.style, k, sourceStyle[k]);
+        } else {
+          el.style[k] = sourceStyle[k];
+        }
       }
     }.bind(this));
+
+    this.initial = false;
+
   },
 
   getStyles: function(el, source, parentDimensions, dimensions, options) {
