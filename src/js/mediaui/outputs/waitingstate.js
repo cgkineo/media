@@ -10,8 +10,9 @@ MediaUI.Output.WaitingState = MediaUI.Output.extend({
     this.ui = ui;
     this.listenTo(this.ui.media, {
       "loadstart seeking waiting stalled error": this.onWaiting,
-      "canplay seeked playing timeupdate": this.offWaiting
+      "canplay seeked playing timeupdate suspend pause": this.offWaiting
     });
+    this.offWaiting();
   },
 
   onWaiting: function() {

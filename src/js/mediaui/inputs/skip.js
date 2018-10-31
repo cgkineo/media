@@ -9,7 +9,6 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
 
   constructor: function Skip(ui) {
     MediaUI.Input.apply(this, arguments);
-    if (!ui.options.canskip) return;
     this.interactions = [];
     this.clear = debounce(this.clear.bind(this), 500);
     this.ui = ui;
@@ -20,11 +19,13 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
   },
 
   onSingleTap: function(event) {
+    if (!this.ui.options.uiskip) return;
     if (!Media.device.wasTouchedRecently) return;
     this.interactions.length = 0;
   },
 
   onDoubleTap$bind: function(event) {
+    if (!this.ui.options.uiskip) return;
     if (!Media.device.wasTouchedRecently) return;
     var kind = elements(event.target).path().filterByAttribute(this.ui.options.inputattribute, "skip");
     if (!kind.length) return;
@@ -77,7 +78,7 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
     var interactions = this.interactions.slice(0);
     if (interactions === undefined) return;
 
-    var unit = this.ui.options.skipseconds || 10;
+    var unit = this.ui.options.uiskipseconds || 10;
 
     var rights = 0, lefts = 0;
     for (var i = 0, l = interactions.length; i < l; i++) {
@@ -105,7 +106,7 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
 });
 
 Media.DefaultOptions.add({
-  canskip: true,
-  skipseconds: 10
+  uiskip: true,
+  uiskipseconds: 10
 });
 Media.DOMEvents.add("skip");
