@@ -111,7 +111,7 @@
   background-color: transparent;
 }
 
-.mediaui--main.layout-default.mediaui--playpausestate-playing .mediaui--bigplaypause {
+.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--bigplaypause {
   visibility: hidden;
   cursor: none !important ;
 }
