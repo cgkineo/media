@@ -41,6 +41,7 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     this.isMouseDown = true;
     this.ui.source.pause();
     var left = event.clientX;
+    this.ui.media.dispatchEvent("scrubbing");
     this.setTimeFromLeft(left);
   },
 
@@ -56,9 +57,13 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
 
   onMouseUp$bind: function() {
     this.isMouseDown = false;
-    if (!this.wasPlaying) return;
+    if (!this.wasPlaying) {
+      this.ui.media.dispatchEvent("scrubbed");
+      return;
+    }
     this.wasPlaying = false;
     this.ui.source.play();
+    this.ui.media.dispatchEvent("scrubbed");
   },
 
   onTouchStart$bind: function(event) {
@@ -66,6 +71,7 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
     this.inTouch = true;
     this.ui.source.pause();
     var left = event.touches[0].clientX;
+    this.ui.media.dispatchEvent("scrubbing");
     this.setTimeFromLeft(left);
   },
 
@@ -77,10 +83,14 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
 
   onTouchEnd$bind: function(event) {
     this.inTouch = false;
-    if (!this.wasPlaying) return;
+    if (!this.wasPlaying) {
+      this.ui.media.dispatchEvent("scrubbed");
+      return;
+    }
     event.stopPropagation();
     this.wasPlaying = false;
     this.ui.source.play();
+    this.ui.media.dispatchEvent("scrubbed");
   },
 
   setTimeFromLeft: function(left) {
@@ -119,3 +129,8 @@ MediaUI.Input.ScrubCurrentTime = MediaUI.Input.extend({
   }
 
 });
+
+Media.DOMEvents.add([
+  "scrubbing",
+  "scrubbed"
+]);

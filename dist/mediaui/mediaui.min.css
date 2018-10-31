@@ -328,6 +328,9 @@
   right: 0;
   bottom: 0;
 }
+.mediaui--scrubbingstate-active .mediaui--bigplaypause {
+  display: none;
+}
 .mediaui--waiting {
   position: absolute;
   top: 50%;
