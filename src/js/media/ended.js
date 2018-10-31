@@ -11,7 +11,7 @@ Media.Class.Ended = Media.Class.extend({
     this.listenTo(Media, {
       "created": this.onCreated,
       "play": this.onPlay,
-      "pause": this.onPause,
+      "timeupdate pause": this.onUpdate,
       "ended": this.onEnded
     });
   },
@@ -23,15 +23,23 @@ Media.Class.Ended = Media.Class.extend({
   },
 
   onPlay: function(media) {
+    if (this.isEnded(media) && media.hasFiredEnded) {
+      media.el.currentTime = 0;
+    }
     media.hasFiredEnded = false;
   },
 
-  onPause: function(media) {
-    if (!this.isEnded(media) || media.isAtEnd) return;
+  onUpdate: function(media) {
+    if (!this.isEnded(media) || media.isAtEnd) {
+      media.hasFiredEnded = false;
+      return;
+    }
     setTimeout(function() {
       if (!media.el) return;
       if (media.hasFiredEnded) return;
       if (!this.isEnded(media)) return;
+      media.el.currentTime = media.el.duration;
+      if (!media.el.paused) media.el.pause();
       media.dispatchEvent('ended');
     }.bind(this), 150);
   },

@@ -53,7 +53,7 @@
   bottom: 0;
 }
 
-.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing ,
+.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--resizecontainerinner,
 .mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--captions,
 .mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--controls {
   cursor: none !important ;

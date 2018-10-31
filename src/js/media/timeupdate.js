@@ -16,7 +16,7 @@ Media.Class.TimeUpdate = Media.Class.extend({
     this.playing = [];
     this.listenTo(Media, {
       "play": this.onPlay,
-      "pause finish destroyed": this.onPause
+      "pause destroyed ended": this.onPause
     });
     this.onRaf = this.onRaf.bind(this);
   },

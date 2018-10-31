@@ -64,6 +64,7 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
   },
 
   engage$bind: function() {
+    this.stopDisengage();
     if (this.isEngaged) return;
     this.isEngaged = true;
     this.ui.trigger("engage");
