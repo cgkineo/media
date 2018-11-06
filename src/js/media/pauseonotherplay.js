@@ -1,6 +1,6 @@
-Media.Class.PauseOnPlay = Media.Class.extend({
+Media.Class.PauseOnOtherPlay = Media.Class.extend({
 
-  constructor: function PauseOnPlay() {
+  constructor: function PauseOnOtherPlay() {
     this.listenTo(Media, {
       "created": this.onCreated,
       "play": this.onPlay
@@ -9,14 +9,14 @@ Media.Class.PauseOnPlay = Media.Class.extend({
 
   onCreated: function(media) {
     media.defineProperties({
-      pauseonplay$enum$write: media.options.pauseonplay
+      pauseonotherplay$enum$write: media.options.pauseonotherplay
     });
   },
 
   onPlay: function(media) {
     for (var i = 0, l = Media.players; i < l; i++) {
       var player = Media.players[i];
-      if (!player.pauseonplay) continue;
+      if (!player.pauseonotherplay) continue;
       player.el.pause();
     }
   }
@@ -24,8 +24,8 @@ Media.Class.PauseOnPlay = Media.Class.extend({
 });
 
 Media.defineProperties({
-  pauseonplay: new Media.Class.PauseOnPlay()
+  pauseonotherplay: new Media.Class.PauseOnOtherPlay()
 });
 Media.DefaultOptions.add({
-  pauseonplay: false
+  pauseonotherplay: false
 });

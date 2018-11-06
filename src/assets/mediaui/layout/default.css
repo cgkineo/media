@@ -145,12 +145,12 @@
   content: "\f101";
 }
 
-.mediaui--main.layout-default.mediaui--playpausestate-paused .mediaui--littleplaypause:before {
-  content: "\f101";
-}
-
 .mediaui--main.layout-default.mediaui--playpausestate-playing .mediaui--bigplaypause:before {
   content: "\f102";
+}
+
+.mediaui--main.layout-default.mediaui--playpausestate-paused .mediaui--littleplaypause:before {
+  content: "\f101";
 }
 
 .mediaui--main.layout-default.mediaui--playpausestate-playing .mediaui--littleplaypause:before {
