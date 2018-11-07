@@ -11,6 +11,9 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
   },
 
   setUpListeners: function() {
+    this.listenTo(Media.device, {
+      typed: this.onTyped
+    });
     this.listenTo(this.ui, {
       begininput: this.onBeginInput,
       tap: this.onTap,
@@ -30,7 +33,7 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
   onBeginInput$bind: function(event) {
     if (this.ui.media.el.paused) return;
     this.isInInput = true;
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     this.stopDisengage();
     this.engage();
   },
@@ -38,16 +41,21 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
   onTap$bind: function(event) {
     if (this.ui.media.el.paused) return;
     if (this.checkForceEngage(event)) return;
-    if (this.isEngaged && Media.device.wasTouchedRecently) {
+    if (this.isEngaged && Media.device.wasUsingTouchRecently) {
       this.disengage();
       return;
     }
     this.engage();
   },
 
+  onTyped$bind: function(event) {
+    if (this.ui.media.el.paused) return;
+    this.engage();
+  },
+
   onEndInput$bind: function(event) {
     if (this.ui.media.el.paused) return;
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     if (this.checkForceEngage(event)) return;
     this.startDisengage();
   },

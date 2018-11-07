@@ -1,4 +1,4 @@
-<div class="${classprefix}main layout-${uilayoutname}" ${outputattribute}="fullscreenstate playpausestate captionsstate mutestate waitingstate controlsstate posterstate engagestate scrubbingstate">
+<div class="${classprefix}main layout-${uilayoutname}" ${outputattribute}="fullscreenstate playpausestate captionsstate mutestate waitingstate controlsstate posterstate engagestate scrubbingstate keyboardstate loopstate">
   <div class="${classprefix}resizecontainer" ${outputattribute}="resize">
     <div class="${classprefix}resizecontainerinner" ${outputattribute}="resizeinner mediaseat">
       <div class="${classprefix}poster">
@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="${classprefix}blank"></div>
-    <div class="${classprefix}controls" ${inputattribute}="taps skip toggleplaypausenotouch">
+    <div class="${classprefix}controls" ${inputattribute}="focusblur taps skip toggleplaypausenotouch">
       <div class="${classprefix}controlsbar" ${inputattribute}="engage stoptappropagation">
         <div class="${classprefix}controlsbarinner" ${outputattribute}="controlbarorder">
           <button class="${classprefix}littleplaypause" ${inputattribute}="toggleplaypause" ${outputattribute}="playpausearia" ${controlbarorderattribute}="playpause"></button>
@@ -25,7 +25,7 @@
       </div>
       <div class="${classprefix}captions" ${outputattribute}="captions"></div>
       <div class="${classprefix}waiting"></div>
-      <button class="${classprefix}bigplaypause" ${inputattribute}="toggleplaypause engage" aria-hidden="true"></button>
+      <button class="${classprefix}bigplaypause" ${inputattribute}="toggleplaypause engage" aria-hidden="true" tabindex="-1"></button>
     </div>
   </div>
 </div>

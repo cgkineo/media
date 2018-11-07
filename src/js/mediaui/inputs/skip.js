@@ -20,13 +20,13 @@ MediaUI.Input.Skip = MediaUI.Input.extend({
 
   onSingleTap: function(event) {
     if (!this.ui.options.uiskip) return;
-    if (!Media.device.wasTouchedRecently) return;
+    if (!Media.device.wasUsingTouchRecently) return;
     this.interactions.length = 0;
   },
 
   onDoubleTap$bind: function(event) {
     if (!this.ui.options.uiskip) return;
-    if (!Media.device.wasTouchedRecently) return;
+    if (!Media.device.wasUsingTouchRecently) return;
     var kind = elements(event.target).path().filterByAttribute(this.ui.options.inputattribute, "skip");
     if (!kind.length) return;
 

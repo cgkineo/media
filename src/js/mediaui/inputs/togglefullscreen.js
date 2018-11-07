@@ -37,7 +37,7 @@ MediaUI.Input.ToggleFullScreen = MediaUI.Input.extend({
   },
 
   onDoubleTap$bind: function() {
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     this.onClick();
   },
 
