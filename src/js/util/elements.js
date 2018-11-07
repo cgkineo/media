@@ -53,7 +53,7 @@ var Elements = List.extend({
     path.unshift(this[0]);
     if (selector) {
       path = path.filter(function(item) {
-        return (item.matches(selector));
+        return (elements(item).matches(selector));
       });
     }
     return path;
@@ -69,7 +69,7 @@ var Elements = List.extend({
     } while (parent)
     if (selector) {
       parents = parents.filter(function(item) {
-        return (item.matches(selector));
+        return (elements(item).matches(selector));
       });
     }
     return parents;
@@ -81,7 +81,7 @@ var Elements = List.extend({
     var children = new Elements(element.children);
     if (selector) {
       children = children.filter(function(item) {
-        return (item.matches(selector));
+        return (elements(item).matches(selector));
       });
     }
     return children;
@@ -276,6 +276,21 @@ var Elements = List.extend({
 
   dispatchEvent: function(name, options) {
     var element = this[0];
+    var event = Elements.createEvent(name, options);
+    element.dispatchEvent(event);
+    return this;
+  },
+
+  matches: function(selector) {
+    var el = this[0];
+    if (!el) return false;
+    if (el.msMatchesSelector) return el.msMatchesSelector(selector);
+    return el.matches(selector);
+  }
+
+},{
+
+  createEvent: function(name, options) {
     options = defaults(options, {
       bubbles: false,
       cancelable: true
@@ -284,8 +299,7 @@ var Elements = List.extend({
       try {
         var event = new Event(name, options);
         extend(event, options);
-        element.dispatchEvent(event);
-        return this;
+        return event;
       } catch (e) {
         Elements._ie11 = true;
       }
@@ -294,8 +308,7 @@ var Elements = List.extend({
     var event = document.createEvent('Event');
     event.initEvent(name, options.bubbles, options.cancelable);
     extend(event, options);
-    element.dispatchEvent(event);
-    return this;
+    return event;
   }
 
 });

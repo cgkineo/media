@@ -45,7 +45,7 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
   },
 
   onMouseDown$bind: function(event) {
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     if (this.isTouchDown) return;
     if (!(event.buttons & 1)) return;
     this.isMouseDown = true;
@@ -53,20 +53,20 @@ MediaUI.Input.Taps = MediaUI.Input.extend({
   },
 
   onMouseMove$bind: function(event) {
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     if (this.isMouseDown || this.isTouchDown || this.tapHandle) return;
     this.ui.trigger("begininput", event);
     this.ui.trigger("endinput", event);
   },
 
   onMouseOut$bind: function(event) {
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     if (this.isMouseDown || this.isTouchDown) return;
     this.ui.trigger("endinput", event);
   },
 
   onMouseUp$bind: function(event) {
-    if (Media.device.wasTouchedRecently) return;
+    if (Media.device.wasUsingTouchRecently) return;
     if (!this.isMouseDown) return;
     this.isMouseDown = false;
     this.ui.trigger("endinput", event);

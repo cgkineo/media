@@ -12,13 +12,14 @@ MediaUI.Output.Poster = MediaUI.Output.extend({
   },
 
   addImage: function() {
+    var poster = this.ui.source.getAttribute("poster");
     this.$els.forEach(function(element) {
       switch (element.nodeName) {
         case "IMG":
-          element.src = this.ui.source.poster;
+          element.src = poster;
           break;
         default:
-          element.style.backgroundImage = "url("+this.ui.source.poster+")";
+          element.style.backgroundImage = "url("+poster+")";
           break;
       }
     }.bind(this));

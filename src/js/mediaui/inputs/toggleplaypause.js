@@ -28,7 +28,7 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
     if (!this.ui.options.uitaptoplaypause) return;
     var $target = elements(event.target);
     var playpausetogglenotouch = $target.path().filterByAttribute(this.ui.options.inputattribute, "toggleplaypausenotouch");
-    if ($target.isHidden() || !playpausetogglenotouch.length || Media.device.wasTouchedRecently) return;
+    if ($target.isHidden() || !playpausetogglenotouch.length || Media.device.wasUsingTouchRecently) return;
     this.toggle();
   },
 

@@ -38,6 +38,7 @@
   top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
 }
 .mediaui--controlsbar {
   position: absolute;
@@ -292,6 +293,7 @@
 }
 .mediaui--main button {
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 .mediaui--poster {
   position: absolute;
@@ -304,6 +306,9 @@
 .mediaui--poster img {
   height: 100%;
   width: 100%;
+}
+.mediaui--poster img[src=''] {
+  display: none;
 }
 .mediaui--railduration {
   position: relative;
