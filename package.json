@@ -1,19 +1,19 @@
 {
-  "name": "jquery.video",
-  "version": "0.0.2",
-  "description": "jQuery video toolkit",
+  "name": "media",
+  "version": "0.0.3",
+  "description": "Media framework",
   "main": "make.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oliverfoster/jquery.video.git"
+    "url": "git+https://github.com/cgkineo/media.git"
   },
   "bugs": {
-    "url": "https://github.com/oliverfoster/jquery.video/issues"
+    "url": "https://github.com/cgkineo/media/issues"
   },
   "scripts": {
     "build": "node make.js"
   },
-  "homepage": "https://github.com/oliverfoster/jquery.video#readme",
+  "homepage": "https://github.com/cgkineo/media",
   "dependencies": {
     "fs-glob": "^1.1.22",
     "google-closure-compiler": "^20181008.0.0",

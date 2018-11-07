@@ -7,7 +7,6 @@ MediaUI.Input.FocusBlur = MediaUI.Input.extend({
   constructor: function FocusBlur(ui) {
     MediaUI.Input.apply(this, arguments);
     this.ui = ui;
-    this.$els = this.ui.$("*").filterByAttribute(this.ui.options.inputattribute, "focusblur").query("*");
     this.setUpListeners();
   },
 
@@ -40,7 +39,6 @@ MediaUI.Input.FocusBlur = MediaUI.Input.extend({
       focusin: this.onFocus
     });
     this.ui = null;
-    this.$els = null;
   }
 
 });
