@@ -1,7 +1,6 @@
 MediaUI.Input.FocusBlur = MediaUI.Input.extend({
 
   ui: null,
-  $els: null,
   isInFocus: false,
 
   constructor: function FocusBlur(ui) {
