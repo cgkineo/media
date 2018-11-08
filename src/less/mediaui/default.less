@@ -30,12 +30,11 @@
     .mediaui--blank {
       background-color: transparent;
       transition: background-color 0.5s;
-      bottom: 0;
     }
 
     /* show blank when controls are not disabled and video is paused */
     &:not(.mediaui--controlsstate-disabled) {
-      &.mediaui-playpausestate-paused {
+      &.mediaui--playpausestate-paused {
         .mediaui--blank {
           background-color: rgba(255, 255, 255, 0.42);
         }
