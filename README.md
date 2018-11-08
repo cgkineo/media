@@ -1,6 +1,6 @@
 # media
 
-### [Wiki](https://github.com/cgkineo/media/wiki/Introduction)
+### [Wiki](https://github.com/cgkineo/media/wiki)
 
 ### Building
 You'll need to clone the project and edit the source files.
