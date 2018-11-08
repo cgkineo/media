@@ -14,14 +14,6 @@ MediaUI.defineProperties({
       });
       if (!layout) {
         layout = this.add(options.uilayoutname);
-        getUrl(options.uilayoutpath+options.uilayoutname+options.uilayoutstyleextension, function(data) {
-          var style = document.createElement("style");
-          var cssText = document.createTextNode(data)
-          style.appendChild(cssText);
-          elements("head").append(style);
-        }.bind(this), function() {
-          throw "Could not find media player layout `"+options.uilayoutname+"`";
-        }.bind(this));
         getUrl(options.uilayoutpath+options.uilayoutname+options.uilayouttemplateextension, function(data) {
           layout.template = function(options) {
             return replace(data, options);
@@ -65,6 +57,5 @@ Media.DefaultOptions.add({
   uilayout: null,
   uilayoutpath: "./layout/",
   uilayoutname: "default",
-  uilayouttemplateextension: ".html",
-  uilayoutstyleextension: ".css"
+  uilayouttemplateextension: ".html"
 });

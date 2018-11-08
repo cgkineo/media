@@ -29,7 +29,6 @@ var Media = Class.extend({
       id: this.el.id
     });
 
-
     this.listenTo(this.options, "change", this.onOptionsChange);
 
     this.initialize();

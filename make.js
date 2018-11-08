@@ -147,6 +147,8 @@ function buildJS(name) {
 
 function buildLess(name) {
     var less = require("less");
+    var LessPluginCleanCSS = require('less-plugin-clean-css');
+    var cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
     var buildConfig = config[name].less;
 
     return fsg.stats({
@@ -165,7 +167,8 @@ function buildLess(name) {
                 outputSourceFiles: true,
                 sourceMapURL: `${name}.min.css.map`,
                 sourceMapBasepath: "src/"
-            }
+            },
+            plugins: [cleanCSSPlugin]
         }, function(error, output) {
             if (error) {
                 console.log(error);
