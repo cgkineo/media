@@ -8,10 +8,13 @@ MediaUI.Output.Poster = MediaUI.Output.extend({
     this.$els = ui.$all().filterByAttribute(ui.options.outputattribute, "poster");
     if (!this.$els.length) return;
     this.ui = ui;
-    this.addImage();
+    this.listenTo(this.ui.media, {
+      change: this.onUpdate
+    });
+    this.onUpdate();
   },
 
-  addImage: function() {
+  onUpdate$bind: function() {
     var poster = this.ui.source.getAttribute("poster");
     this.$els.forEach(function(element) {
       switch (element.nodeName) {

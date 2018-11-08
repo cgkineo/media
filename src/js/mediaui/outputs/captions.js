@@ -12,6 +12,9 @@ MediaUI.Output.Captions = MediaUI.Output.extend({
 
   getElements: function() {
     this.$els = this.ui.$("*:not(track)").filterByAttribute(this.ui.options.outputattribute, "captions");
+    if (this.ui.media.tracks && this.ui.media.tracks.length > 1) {
+      console.warn("MediaUI: doesn't yet support multiple text tracks.");
+    }
   },
 
   setUpListeners: function() {

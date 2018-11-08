@@ -3,13 +3,15 @@ MediaUI.Output.CurrentTimeWidth = MediaUI.Output.extend({
   ui: null,
   $els: null,
 
+  requiredAPI: ['currentTime', 'duration'],
+
   constructor: function CurrentTimeWidth(ui) {
     MediaUI.Output.apply(this, arguments);
     this.$els = ui.$all().filterByAttribute(ui.options.outputattribute, "currenttimewidth");
     if (!this.$els.length) return;
     this.ui = ui;
     this.listenTo(this.ui.media, {
-      "timeupdate postresize ended": this.onTimeUpdate,
+      "timeupdate postresize ended change": this.onTimeUpdate,
       "destroyed": this.destroy
     });
     this.onTimeUpdate();
@@ -22,6 +24,13 @@ MediaUI.Output.CurrentTimeWidth = MediaUI.Output.extend({
 
   update: function() {
     if (!this.$els.length) return;
+    if (!this.ui.media.hasAPI(this.requiredAPI)) {
+      for (var i = 0, l = this.$els.length; i < l; i++) {
+        var rail = this.$els[i];
+        rafer.set(rail.style, "width", 0);
+      }
+      return;
+    }
     var position = (this.ui.source.currentTime / this.ui.source.duration) || 0;
     for (var i = 0, l = this.$els.length; i < l; i++) {
       var rail = this.$els[i];

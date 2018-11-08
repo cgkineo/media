@@ -5,7 +5,8 @@ within 0.01 of each other and the media is paused.
  */
 Media.Class.Ended = Media.Class.extend({
 
-  floorPrecision: 10,
+  floorPrecision$write: 10,
+  requiredAPI$write: ['paused', 'pause', 'currentTime', 'duration'],
 
   constructor: function Ended() {
     this.listenTo(Media, {
@@ -16,20 +17,22 @@ Media.Class.Ended = Media.Class.extend({
     });
   },
 
-  onCreated: function(media) {
+  onCreated$write: function(media) {
     media.defineProperties({
       hasFiredEnded$write: false
     });
   },
 
-  onPlay: function(media) {
+  onPlay$write: function(media) {
+    if (!media.hasAPI(this.requiredAPI)) return;
     if (this.isEnded(media) && media.hasFiredEnded) {
       media.el.currentTime = 0;
     }
     media.hasFiredEnded = false;
   },
 
-  onUpdate: function(media) {
+  onUpdate$write: function(media) {
+    if (!media.hasAPI(this.requiredAPI)) return;
     if (!this.isEnded(media) || media.isAtEnd) {
       media.hasFiredEnded = false;
       return;
@@ -44,11 +47,13 @@ Media.Class.Ended = Media.Class.extend({
     }.bind(this), 150);
   },
 
-  onEnded: function(media) {
+  onEnded$write: function(media) {
+    if (!media.hasAPI(this.requiredAPI)) return;
     media.hasFiredEnded = true;
   },
 
   isEnded: function(media) {
+    if (!media.hasAPI(this.requiredAPI)) return false;
     return (Math.abs(Math.floor(media.el.currentTime*this.floorPrecision) - Math.floor(media.el.duration*this.floorPrecision)) <= 1);
   }
 

@@ -30,7 +30,10 @@ if ($ && $.fn) {
     }
 
     $medias.each(function(index, item) {
-      if (item[Media._prop]) return;
+      if (item[Media.propName]) {
+        item[Media.propName].options.add(options);
+        return;
+      }
       options = new Media.JQueryDefaultOptions(options);
       var media = new Media(item, options);
       if (MediaUI) {
@@ -46,7 +49,13 @@ if ($ && $.fn) {
     $medias = $medias.add(this.filter(Media.supportedTags));
     $medias.each(function(index, item) {
       if (!item.paused) return;
-      item.play && item.play();
+      var promise = item.play && item.play();
+      if (!promise) return;
+      promise.then(function() {
+
+      }, function(error) {
+        console.log(error);
+      });
     });
   };
 

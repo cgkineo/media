@@ -10,6 +10,9 @@
 .mediaui--main *::cue {
   visibility: hidden;
 }
+.mediaui--cue {
+  margin: 2px 0;
+}
 .mediaui--cue-line {
   background: black;
   color: white;
@@ -40,6 +43,9 @@
   right: 0;
   bottom: 0;
 }
+.mediaui--controlsstate-disabled .mediaui--controls {
+  display: none;
+}
 .mediaui--controlsbar {
   position: absolute;
   left: 0;
@@ -69,6 +75,23 @@
   border: 0;
   line-height: inherit;
   min-height: inherit;
+}
+.mediaui--playpausestate-disabled .mediaui--railduration,
+.mediaui--playpausestate-disabled .mediaui--littleplaypause,
+.mediaui--playpausestate-disabled .mediaui--bigplaypause {
+  display: none;
+}
+.mediaui--bigplaypausestate-hidden .mediaui--bigplaypause {
+  display: none;
+}
+.mediaui--mutestate-disabled .mediaui--littlemute {
+  display: none;
+}
+.mediaui--captionsstate-disabled .mediaui--littlecaptions {
+  display: none;
+}
+.mediaui--fullscreenstate-disabled .mediaui--littlefullscreen {
+  display: none;
 }
 /* http://fontstore.baidu.com/static/editor/index-en.html# */
 @font-face {
@@ -295,6 +318,9 @@
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
+.mediaui--main button:focus {
+  outline-offset: -1px;
+}
 .mediaui--poster {
   position: absolute;
   top: 0;
@@ -309,6 +335,12 @@
 }
 .mediaui--poster img[src=''] {
   display: none;
+}
+.mediaui--posterstate-disabled .mediaui--poster {
+  display: none;
+}
+.mediaui--posterstate-force .mediaui--poster {
+  display: block;
 }
 .mediaui--railduration {
   position: relative;
@@ -341,9 +373,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transition: opacity 0.5s;
 }
 .mediaui--waitingstate-inactive .mediaui--waiting {
-  display: none;
+  opacity: 0;
 }
 .mediaui--waitingstate-active .mediaui--bigplaypause {
   display: none;

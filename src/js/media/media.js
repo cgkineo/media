@@ -4,6 +4,9 @@ var Media = Class.extend({
   $el: null,
   options: null,
 
+  requiredAPI$wrtie: ['paused'],
+  warnedAPI$write: [],
+
   constructor: function Media(element, options) {
     // Return a preexiting player if it exists
     if (element[Media.propName]) return element;
@@ -26,8 +29,17 @@ var Media = Class.extend({
       id: this.el.id
     });
 
+
+    this.listenTo(this.options, "change", this.onOptionsChange);
+
     this.initialize();
 
+  },
+
+  onOptionsChange: function() {
+    this.dispatchEvent("change", {
+      mutations: null
+    });
   },
 
   initialize: function() {
@@ -43,7 +55,9 @@ var Media = Class.extend({
   },
 
   checkPlaying$write: function() {
-    if (this.el.paused) return;
+    if (!this.hasAPI(this.requiredAPI) || this.el.paused) {
+      return this.dispatchEvent("pause");
+    }
     this.dispatchEvent("play");
   },
 
@@ -77,6 +91,21 @@ var Media = Class.extend({
     Media.trigger(event.type, this, event);
   },
 
+  hasAPI: function(nameArgs) {
+    var names = isArray(nameArgs) ? nameArgs : toArray(arguments);
+    for (var i = 0, l = names.length; i < l; i++) {
+      var name = names[i];
+      if (this.el[name] === undefined) {
+        if (!includes(this.warnedAPI, name)) {
+          console.warn("Media: element doesn't support require api",  "'" + name + "'" ,this.el);
+          this.warnedAPI.push(name);
+        }
+        return false;
+      }
+    }
+    return true;
+  },
+
   destroy: function() {
     Media.trigger("destroy", this);
     this.trigger("destroy");
@@ -103,7 +132,7 @@ var Media = Class.extend({
 
 }, {
 
-  supportedTags$enum$write: "video, audio, canvas, img",
+  supportedTags$enum$write: "video, audio, canvas, img, div",
   propName$enum$write: "player",
 
   Class$write: Class.extend({

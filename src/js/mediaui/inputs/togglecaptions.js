@@ -19,6 +19,7 @@ MediaUI.Input.ToggleCaptions = MediaUI.Input.extend({
     }
     if (!this.ui.media.tracks.length) return;
     this.ui.media.tracks[0].default = true;
+    this.ui.media.dispatchEvent("timeupdate", { fast: true, medium: true, slow: true });
   },
 
   destroy: function() {

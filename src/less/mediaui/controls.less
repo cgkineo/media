@@ -15,6 +15,12 @@
   bottom: 0;
 }
 
+.mediaui--controlsstate-disabled {
+  .mediaui--controls {
+    display: none;
+  }
+}
+
 .mediaui--controlsbar {
   position: absolute;
   left: 0;
@@ -47,4 +53,36 @@
   border: 0;
   line-height: inherit;
   min-height: inherit;
+}
+
+.mediaui--playpausestate-disabled {
+  .mediaui--railduration,
+  .mediaui--littleplaypause,
+  .mediaui--bigplaypause {
+    display: none;
+  }
+}
+
+.mediaui--bigplaypausestate-hidden {
+  .mediaui--bigplaypause {
+    display: none;
+  }
+}
+
+.mediaui--mutestate-disabled {
+  .mediaui--littlemute {
+    display: none;
+  }
+}
+
+.mediaui--captionsstate-disabled {
+  .mediaui--littlecaptions {
+    display: none;
+  }
+}
+
+.mediaui--fullscreenstate-disabled {
+  .mediaui--littlefullscreen {
+    display: none;
+  }
 }

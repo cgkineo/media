@@ -18,7 +18,7 @@ MediaUI.Output.PlayPauseAria = MediaUI.Output.extend({
     if (!this.$els.length) return;
     var options = this.ui.options;
     MediaUI.languages.load(options, function(language) {
-      var isPaused = this.ui.source.paused;
+      var isPaused = Boolean(this.ui.source.paused);
       var value;
       if (!isPaused) {
         value = replace("${Pause}", language.hash);

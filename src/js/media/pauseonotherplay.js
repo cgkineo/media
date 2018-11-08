@@ -1,5 +1,7 @@
 Media.Class.PauseOnOtherPlay = Media.Class.extend({
 
+  requiredAPI$write: ['paused'],
+
   constructor: function PauseOnOtherPlay() {
     this.listenTo(Media, {
       "created": this.onCreated,
@@ -17,7 +19,7 @@ Media.Class.PauseOnOtherPlay = Media.Class.extend({
     for (var i = 0, l = Media.players; i < l; i++) {
       var player = Media.players[i];
       if (!player.pauseonotherplay) continue;
-      player.el.pause();
+      if (media.hasAPI('paused')) player.el.pause();
     }
   }
 

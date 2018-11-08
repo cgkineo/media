@@ -1,9 +1,10 @@
-
-.mediaui--main.layout-default.mediaui--playpausestate-playing .mediaui--blank {
-  display: none;
+.mediaui--main.layout-default .mediaui--blank {
+  background-color: transparent;
+  transition: background-color 0.5s;
+  bottom: 0;
 }
 
-.mediaui--main.layout-default .mediaui--blank {
+.mediaui--main.layout-default:not(.mediaui--controlsstate-disabled).mediaui--playpausestate-paused .mediaui--blank {
   background-color: rgba(255, 255, 255, 0.42);
 }
 
@@ -47,17 +48,12 @@
   opacity: 1;
 }
 
-.mediaui--main.layout-default.mediaui--playpausestate-middle .mediaui--poster {
+.mediaui--main.layout-default.mediaui--playpausestate-middle:not(.mediaui--posterstate-force) .mediaui--poster {
   opacity: 0;
 }
 
-.mediaui--main.layout-default.mediaui--loopstate-looping.mediaui--playpausestate-playing .mediaui--poster {
+.mediaui--main.layout-default.mediaui--loopstate-looping.mediaui--playpausestate-playing:not(.mediaui--posterstate-force) .mediaui--poster {
   opacity: 0;
-}
-
-.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--blank {
-  background-color: transparent !important;
-  bottom: 0;
 }
 
 .mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--resizecontainerinner,
@@ -70,18 +66,18 @@
   background-color: rgba(255, 255, 255, 0.42);
 }
 
-.mediaui--main.layout-default .mediaui--controls {
+.mediaui--main.layout-default:not(.mediaui--controlsstate-disabled) .mediaui--controls {
   cursor: pointer;
 }
 
 .mediaui--main.layout-default .mediaui--controlsbarinner {
-  transition: transform 0.5s;
+  transition: transform 0.5s, background-color 0.5s;
   transform: translateY(0);
   background-color: transparent;
-  padding: 0 5px;
+  padding: 1px 5px;
 }
 
-.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing  .mediaui--controlsbarinner {
+.mediaui--main.layout-default:not(.mediaui--engagestate-engaged):not(.mediaui--controlsstate-force).mediaui--playpausestate-playing  .mediaui--controlsbarinner {
   transform: translateY(100%);
 }
 
@@ -111,11 +107,11 @@
 
 .mediaui--main.layout-default .mediaui--captions {
   transition: bottom 0.5s;
-  bottom: 42px;
+  bottom: 44px;
   margin: 0;
 }
 
-.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--captions {
+.mediaui--main.layout-default:not(.mediaui--engagestate-engaged):not(.mediaui--controlsstate-force).mediaui--playpausestate-playing .mediaui--captions {
   bottom: 0;
 }
 
@@ -127,16 +123,8 @@
 }
 
 .mediaui--main.layout-default.mediaui--playpausestate-playing .mediaui--bigplaypause {
-  display: none;
-}
-
-.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--bigplaypause {
   visibility: hidden;
-  cursor: none !important ;
-}
-
-.mediaui--main.layout-default:not(.mediaui--engagestate-engaged).mediaui--playpausestate-playing .mediaui--bigplaypause {
-  opacity: 0;
+  cursor: none !important;
 }
 
 .mediaui--main.layout-default .mediaui--littleplaypause,

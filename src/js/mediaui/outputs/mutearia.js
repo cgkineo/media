@@ -18,7 +18,7 @@ MediaUI.Output.MuteAria = MediaUI.Output.extend({
     if (!this.$els.length) return;
     var options = this.ui.options;
     MediaUI.languages.load(options, function(language) {
-      var isMuted = this.ui.source.muted;
+      var isMuted = Boolean(this.ui.source.muted);
       var value;
       if (isMuted) {
         value = replace("${Unmute}", language.hash);

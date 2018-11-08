@@ -15,11 +15,17 @@ Media.Class.TextTracks = Media.Class.extend({
   },
 
   onTimeUpdate: function(media, event) {
-    if (!event.slow) return;
+    if (event && !event.slow) return;
     for (var i = 0, l = media.tracks.length; i < l; i++) {
       var track = media.tracks[i];
       track.update();
     }
+  },
+
+  onChange: function(media) {
+    delete media.tracks;
+    this.onCreate(media);
+    this.onTimeUpdate(media);
   },
 
   onDestroy: function(media) {

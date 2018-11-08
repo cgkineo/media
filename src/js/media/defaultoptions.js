@@ -74,3 +74,4 @@ Media.DefaultOptions.add({
   id: "",
   media: null
 });
+

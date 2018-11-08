@@ -14,7 +14,6 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
     this.listenTo(this.ui.media, {
       "resize": this.onResize
     });
-    this.listenTo(this.ui.options, "change", this.onOptionsChange);
   },
 
   onOptionsChange: function(name, value, oldValue) {
@@ -157,8 +156,8 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
         }
         break;
       case "retain":
-        var height = clamp(0, parentDimensions.height.value, source.videoHeight || source.originalHeight || source.height);
-        var width = clamp(0, parentDimensions.width.value, source.videoWidth || source.originalWidth || source.width);
+        var height = clamp(0, parentDimensions.height.value, this.ui.size.height(source));
+        var width = clamp(0, parentDimensions.width.value, this.ui.size.width(source));
         if (dimensions.ratio <= parentDimensions.ratio) {
           // Full height
           style.height = makeUnit(height, parentDimensions.height.unit);
@@ -292,6 +291,6 @@ Media.DefaultOptions.add({
     return this.uiratio;
   },
   uifullscreenposition: function() {
-    return this.uiposition
+    return this.uiposition;
   }
 });

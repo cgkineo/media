@@ -9,27 +9,30 @@ MediaUI.Output.FullScreenState = MediaUI.Output.extend({
     if (!this.$els.length) return;
     this.ui = ui;
     this.listenTo(this.ui.media, {
-      "resize": this.onResize
+      "resize change": this.onUpdate
     });
     elements(document).on({
-      fullscreenchange: this.onFullScreenChange
+      fullscreenchange: this.onUpdate
     }, {
       passive: false
     });
+    this.onUpdate();
   },
 
-  onFullScreenChange$bind: function(event) {
-    this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-"+this.ui.fullscreen.type, this.ui.fullscreen.isActive);
-  },
-
-  onResize$bind: function(event) {
+  onUpdate$bind: function(event) {
+    if (this.ui.fullscreen.isDisabled) {
+      this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-disabled", true);
+      this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-"+this.ui.fullscreen.type, false);
+      return;
+    }
+    this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-disabled", false);
     this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-"+this.ui.fullscreen.type, this.ui.fullscreen.isActive);
   },
 
   destroy: function() {
     MediaUI.Output.prototype.destroy.apply(this, arguments);
     elements(document).off({
-      fullscreenchange: this.onFullScreenChange
+      fullscreenchange: this.onUpdate
     });
     this.ui = null;
     this.$els = null;

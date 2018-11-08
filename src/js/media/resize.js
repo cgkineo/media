@@ -3,7 +3,7 @@ Media.Class.Resize = Media.Class.extend({
   constructor: function Resize(media) {
     this.listenTo(Media, {
       "created": this.onCreated,
-      "resize": this.onResize
+      "resize change": this.onResize
     });
     this.addEventListeners();
   },

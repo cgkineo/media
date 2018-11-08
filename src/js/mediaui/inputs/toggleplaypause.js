@@ -3,6 +3,8 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
   ui: null,
   $els: null,
 
+  requiredAPI$write: ['paused', 'play', 'pause'],
+
   constructor: function TogglePlayPause(ui) {
     MediaUI.Input.apply(this, arguments);
     this.$els = ui.$all().filterByAttribute(ui.options.inputattribute, "toggleplaypause");
@@ -33,6 +35,7 @@ MediaUI.Input.TogglePlayPause = MediaUI.Input.extend({
   },
 
   toggle: function() {
+    if (!this.ui.media.hasAPI(this.requiredAPI)) return;
     var isPaused = this.ui.source.paused;
     if (isPaused) this.ui.source.play();
     else this.ui.source.pause();

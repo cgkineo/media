@@ -9,7 +9,7 @@ MediaUI.Output.CurrentTimeAria = MediaUI.Output.extend({
     if (!this.$els.length) return;
     this.ui = ui;
     this.listenTo(this.ui.media, {
-      "timeupdate": this.onUpdate
+      "timeupdate change": this.onUpdate
     });
     this.onUpdate();
   },
@@ -19,7 +19,7 @@ MediaUI.Output.CurrentTimeAria = MediaUI.Output.extend({
     if (!this.$els.length) return;
     var options = this.ui.options;
     MediaUI.languages.load(options, function(language) {
-      var currentTime = parseInt(this.ui.source.currentTime);
+      var currentTime = parseInt(this.ui.source.currentTime || 0);
       var duration = parseInt(this.ui.source.duration || 0);
       var ariaLabel = language.hash["Progress Bar"] + " " + language.hash["progress bar timing: currentTime={1} duration={2}"||""].replace("{1}", currentTime).replace("{2}", duration);
       rafer.call(this.$els, "attr", "role", "slider");

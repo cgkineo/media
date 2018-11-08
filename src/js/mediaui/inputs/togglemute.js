@@ -3,6 +3,8 @@ MediaUI.Input.ToggleMute = MediaUI.Input.extend({
   ui: null,
   $els: null,
 
+  requiredAPI$write: ['muted'],
+
   constructor: function ToggleMute(ui) {
     MediaUI.Input.apply(this, arguments);
     this.ui = ui;
@@ -13,6 +15,7 @@ MediaUI.Input.ToggleMute = MediaUI.Input.extend({
   },
 
   onClick$bind: function() {
+    if (!this.ui.media.hasAPI(this.requiredAPI)) return;
     this.ui.source.muted = !this.ui.source.muted;
   },
 

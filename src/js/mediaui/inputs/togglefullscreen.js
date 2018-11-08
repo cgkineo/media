@@ -17,6 +17,7 @@ MediaUI.Input.ToggleFullScreen = MediaUI.Input.extend({
 
   onClick$bind: function() {
     var options = this.ui.options;
+    if (!options.uiallowfullscreen) return;
     if (this.ui.options.usefullwindow) {
       window.fullscreenPolyfill.useFullWindow = true;
     }
@@ -37,6 +38,7 @@ MediaUI.Input.ToggleFullScreen = MediaUI.Input.extend({
   },
 
   onDoubleTap$bind: function() {
+    if (!this.ui.options.uiallowfullscreen) return;
     if (Media.device.wasUsingTouchRecently) return;
     this.onClick();
   },

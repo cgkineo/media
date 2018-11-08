@@ -8,6 +8,9 @@ MediaUI.Output.ControlBarOrder = MediaUI.Output.extend({
     this.$els = ui.$all().filterByAttribute(ui.options.outputattribute, "controlbarorder");
     if (!this.$els.length) return;
     this.ui = ui;
+    this.listenTo(this.ui.media, {
+      change: this.reorder
+    });
     this.reorder();
   },
 

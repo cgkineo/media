@@ -7,6 +7,10 @@ MediaUI.Controller.FullScreen = MediaUI.Controller.extend({
     this.ui = ui;
   },
 
+  isDisabled$get$enum: function() {
+    return !this.ui.options.uiallowfullscreen;
+  },
+
   isActive$get$enum: function() {
     return (this.ui.el === document.fullscreenElement || document.fullscreenElement === this.ui.source);
   },
@@ -15,4 +19,8 @@ MediaUI.Controller.FullScreen = MediaUI.Controller.extend({
     return (window.fullscreenPolyfill.useFullWindow) ? "fullwindow" : "browser";
   }
 
+});
+
+Media.DefaultOptions.add({
+  uiallowfullscreen: true
 });

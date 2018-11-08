@@ -103,6 +103,7 @@ var ClassExtend = function(proto, cls, classOptions) {
 var ClassParent = function Class(proto, cls) {};
 var ListParent = function List(proto, cls) {};
 ListParent.prototype = new Array();
+ListParent.prototype.length$write = 0;
 
 // Create base Class and List prototypes
 // Add Events system to both class and instances

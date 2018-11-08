@@ -11,12 +11,12 @@ MediaUI.Output.LoopState = MediaUI.Output.extend({
     if (!this.$els.length) return;
     this.ui = ui;
     this.listenTo(this.ui.media, {
-      "timeupdate play pause ended": this.onTimeUpdate
+      "timeupdate play pause ended change": this.onUpdate
     });
-    this.onTimeUpdate();
+    this.onUpdate();
   },
 
-  onTimeUpdate: function(event) {
+  onUpdate: function(event) {
     if (event && event.type === "timeupdate" && !event.slow) return;
     if (!this.$els.length) return;
     var isLoop = this.ui.source.loop;

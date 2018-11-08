@@ -17,6 +17,7 @@
   <script src="../src/js/media/media.js"></script>
   <script src="../src/js/media/defaultoptions.js"></script>
   <script src="../src/js/media/domevents.js"></script>
+  <script src="../src/js/media/domchanges.js"></script>
   <script src="../src/js/media/device.js"></script>
   <script src="../src/js/media/timeupdate.js"></script>
   <script src="../src/js/media/utils.js"></script>
@@ -43,6 +44,7 @@
   <script src="../src/js/mediaui/layouts.js"></script>
   <script src="../src/js/mediaui/controllers/fullscreen.js"></script>
   <script src="../src/js/mediaui/controllers/captions.js"></script>
+  <script src="../src/js/mediaui/controllers/size.js"></script>
   <script src="../src/js/mediaui/inputs/scrubcurrenttime.js"></script>
   <script src="../src/js/mediaui/inputs/scrubcurrenttimearia.js"></script>
   <script src="../src/js/mediaui/inputs/skip.js"></script>
@@ -56,10 +58,13 @@
   <script src="../src/js/mediaui/outputs/captions.js"></script>
   <script src="../src/js/mediaui/outputs/captionsstate.js"></script>
   <script src="../src/js/mediaui/outputs/captionsaria.js"></script>
+  <script src="../src/js/mediaui/outputs/controlsstate.js"></script>
   <script src="../src/js/mediaui/outputs/controlbarorder.js"></script>
   <script src="../src/js/mediaui/outputs/playpausearia.js"></script>
   <script src="../src/js/mediaui/outputs/playpausestate.js"></script>
+  <script src="../src/js/mediaui/outputs/bigplaypausestate.js"></script>
   <script src="../src/js/mediaui/outputs/poster.js"></script>
+  <script src="../src/js/mediaui/outputs/posterstate.js"></script>
   <script src="../src/js/mediaui/outputs/loopstate.js"></script>
   <script src="../src/js/mediaui/outputs/waitingstate.js"></script>
   <script src="../src/js/mediaui/outputs/keyboardstate.js"></script>
@@ -83,6 +88,13 @@
   <link rel="stylesheet" type="text/css" href="../dist/mediaui/mediaui.min.css">
 </head>
   <body>
+    <div class="novideo" poster="c-40.jpg"></div>
+
+    <audio src="c-40.mp3" poster="c-40.jpg">
+      <track kind="captions" src="c-40-de.vtt" type="text/vtt" srclang="de" label="Deutsch">
+      <track kind="captions" src="c-40.vtt" type="text/vtt" srclang="en" label="English" default>
+    </audio>
+
     <video preload="none" id="c-40" src="c-40.mp4" loop="true" poster="c-40.jpg">
       <track kind="captions" src="c-40-de.vtt" type="text/vtt" srclang="de" label="Deutsch">
       <track kind="captions" src="c-40.vtt" type="text/vtt" srclang="en" label="English" default>
@@ -90,6 +102,61 @@
 
     <input type="text">
   <script>
+    var $novideo = $('.novideo').medias({
+      uilangpath: "../dist/mediaui/lang/",
+      uilayoutpath: "../dist/mediaui/layout/",
+      uicontrolbarorder: [
+        "playpause",
+        "captions",
+        "mute",
+        "rail",
+        "fullscreen"
+      ],
+      uiskip: true,
+      uitaptoplaypause: true,
+    // fill width
+      mediasize: "100% auto",
+      mediaposition: "center",
+      uisize: "100% auto",
+      uiposition: "none",
+      usefullwindow: false,
+      mediafullscreensize: "contain",
+      mediafullscreenposition: "center",
+      uifullscreensize: "contain",
+      uifullscreenposition: "center",
+      uiallowfullscreen: false,
+      uiallowcontrols: false
+    });
+
+    var $audio = $('audio').medias({
+      uilangpath: "../dist/mediaui/lang/",
+      uilayoutpath: "../dist/mediaui/layout/",
+      uicontrolbarorder: [
+        "playpause",
+        "captions",
+        "mute",
+        "rail",
+        "fullscreen"
+      ],
+      uiskip: true,
+      uitaptoplaypause: true,
+    // fill width
+      mediasize: "100% none",
+      mediaposition: "center",
+      uisize: "100% 144px",
+      uiposition: "none",
+      usefullwindow: false,
+      mediafullscreensize: "contain",
+      mediafullscreenposition: "center",
+      uifullscreensize: "contain",
+      uifullscreenposition: "center",
+      uiallowfullscreen: false,
+      uishowbigplaypause: false,
+      uialwaysshowcontrols: true,
+      uialwaysshowposter: false,
+      uiallowposter: false
+    });
+
     var $video = $('video').medias({
       uilangpath: "../dist/mediaui/lang/",
       uilayoutpath: "../dist/mediaui/layout/",
