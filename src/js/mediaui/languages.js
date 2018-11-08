@@ -14,7 +14,7 @@ MediaUI.defineProperties({
       });
       if (!language) {
         language = this.add(options.uilangcode);
-        getUrl(options.uilangpath+options.uilangcode+options.uilangextension, function(data) {
+        getURL(options.uilangpath+options.uilangcode+options.uilangextension, function(data) {
           language.hash = JSON.parse(data);
         }.bind(this), function() {
           throw "Could not find media player language `"+options.uilangcode+"`";

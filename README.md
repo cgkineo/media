@@ -1,5 +1,7 @@
 # media
 
+### [Wiki](https://github.com/cgkineo/media/wiki/Introduction)
+
 ### Building
 You'll need to clone the project and edit the source files.
 Run the following to get the build output.
@@ -10,7 +12,7 @@ $ npm install
 $ npm run build
 ```
 
-### Usage example
+### Simple usage example
 ```javascript
 
     var $video = $('video').medias({

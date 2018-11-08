@@ -93,7 +93,7 @@ Media.Class.TextTrack = Media.Class.extend({
 
   fetch$write: function() {
     this.readyState = Media.Class.TextTrack.READYSTATE.LOADING;
-    getUrl(this.el.src, function(data) {
+    getURL(this.el.src, function(data) {
       if (!data) {
         this.readyState = Media.Class.TextTrack.READY_STATE.ERROR;
         return;

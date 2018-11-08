@@ -14,7 +14,7 @@ MediaUI.defineProperties({
       });
       if (!layout) {
         layout = this.add(options.uilayoutname);
-        getUrl(options.uilayoutpath+options.uilayoutname+options.uilayouttemplateextension, function(data) {
+        getURL(options.uilayoutpath+options.uilayoutname+options.uilayouttemplateextension, function(data) {
           layout.template = function(options) {
             return replace(data, options);
           };
