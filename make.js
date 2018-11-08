@@ -145,7 +145,7 @@ function buildJS(name) {
 
 }
 
-function buildLess(name) {
+function buildLESS(name) {
     var less = require("less");
     var LessPluginCleanCSS = require('less-plugin-clean-css');
     var cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
@@ -194,7 +194,7 @@ buildJS("media")
 .then(function() {
     return buildJS("mediaui");
 }).then(function() {
-    return buildLess("mediaui");
+    return buildLESS("mediaui");
 }).then(function() {
     return copyAssets("mediaui");
 });
