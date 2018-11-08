@@ -1,7 +1,5 @@
 MediaUI.Input.Skip = MediaUI.Input.extend({
 
-  floorPrecision: 10,
-
   ui: null,
   interactions: null,
   lastEvent: 0,

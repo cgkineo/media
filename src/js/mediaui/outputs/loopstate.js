@@ -1,7 +1,5 @@
 MediaUI.Output.LoopState = MediaUI.Output.extend({
 
-  floorPrecision: 10,
-
   ui: null,
   $els: null,
 
