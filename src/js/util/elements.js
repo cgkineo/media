@@ -234,7 +234,11 @@ var Elements = List.extend({
     }
     this.forEach(function(element) {
       if (!element.setAttribute) return;
-      element.setAttribute(name, value);
+      try {
+        element.setAttribute(name, value);
+      } catch (error) {
+        console.warn("Media: Could not set attribute '"+name+"' to:", value);
+      }
     });
     return this;
   },
