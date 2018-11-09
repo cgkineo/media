@@ -17,7 +17,7 @@ MediaUI.Output.MuteState = MediaUI.Output.extend({
   },
 
   onUpdate$bind: function() {
-    if (!this.ui.media.hasAPI(this.requiredAPI)) {
+    if (!this.ui.media.hasAPI(this.requiredAPI) || !this.ui.src.value) {
       rafer.call(this.$els, "toggleClass", replace("${classprefix}mutestate-disabled", this.ui.options), true);
       rafer.call(this.$els, "toggleClass", replace("${classprefix}mutestate-muted", this.ui.options), true);
       return;

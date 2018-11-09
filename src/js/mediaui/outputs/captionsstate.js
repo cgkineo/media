@@ -15,7 +15,7 @@ MediaUI.Output.CaptionsState = MediaUI.Output.extend({
   },
 
   onTextTrackChange$bind: function(event) {
-    if (!this.ui.media.tracks || !this.ui.media.tracks.length) {
+    if (!this.ui.media.tracks || !this.ui.media.tracks.length || !this.ui.src.value) {
       rafer.call(this.$els, "toggleClass", this.ui.options.classprefix+"captionsstate-disabled", true);
       rafer.call(this.$els, "toggleClass", this.ui.options.classprefix+"captionsstate-inactive", true);
       rafer.call(this.$els, "toggleClass", this.ui.options.classprefix+"captionsstate-active", false);

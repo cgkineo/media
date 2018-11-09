@@ -19,7 +19,7 @@ MediaUI.Output.BigPlayPauseState = MediaUI.Output.extend({
   onUpdate: function(event) {
     if (!this.$els.length) return;
     var options = this.ui.options;
-    if (!this.ui.media.hasAPI(this.requiredAPI) || !this.ui.options.uishowbigplaypause) {
+    if (!this.ui.media.hasAPI(this.requiredAPI) || !this.ui.options.uishowbigplaypause || !this.ui.src.value) {
       rafer.call(this.$els, "toggleClass", replace("${classprefix}bigplaypausestate-hidden", options), true);
       return;
     }

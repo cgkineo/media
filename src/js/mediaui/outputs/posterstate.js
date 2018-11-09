@@ -17,7 +17,7 @@ MediaUI.Output.PosterState = MediaUI.Output.extend({
   onUpdate: function(event) {
     if (!this.$els.length) return;
     var options = this.ui.options;
-    if (!options.uiallowposter) {
+    if (!options.uiallowposter || !this.ui.poster.value) {
       rafer.call(this.$els, "toggleClass", replace("${classprefix}posterstate-disabled", options), true);
       rafer.call(this.$els, "toggleClass", replace("${classprefix}posterstate-force", options), false);
       return;

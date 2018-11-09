@@ -24,7 +24,7 @@ MediaUI.Output.CurrentTimeWidth = MediaUI.Output.extend({
 
   update: function() {
     if (!this.$els.length) return;
-    if (!this.ui.media.hasAPI(this.requiredAPI)) {
+    if (!this.ui.media.hasAPI(this.requiredAPI) || !this.ui.source.src) {
       for (var i = 0, l = this.$els.length; i < l; i++) {
         var rail = this.$els[i];
         rafer.set(rail.style, "width", 0);

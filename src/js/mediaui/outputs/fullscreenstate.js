@@ -20,7 +20,7 @@ MediaUI.Output.FullScreenState = MediaUI.Output.extend({
   },
 
   onUpdate$bind: function(event) {
-    if (this.ui.fullscreen.isDisabled) {
+    if (this.ui.fullscreen.isDisabled || !this.ui.src.value) {
       this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-disabled", true);
       this.$els.toggleClass(this.ui.options.classprefix+"fullscreenstate-"+this.ui.fullscreen.type, false);
       return;

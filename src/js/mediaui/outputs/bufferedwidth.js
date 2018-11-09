@@ -26,7 +26,7 @@ MediaUI.Output.BufferedWidth = MediaUI.Output.extend({
     if (!this.$els.length) return;
     var duration = this.ui.source.duration;
     var buffered = this.ui.source.buffered;
-    if (!this.ui.media.hasAPI(this.requiredAPI)) {
+    if (!this.ui.media.hasAPI(this.requiredAPI) || !this.ui.source.src) {
       for (var i = 0, l = this.$els.length; i < l; i++) {
         var el = this.$els[i];
         rafer.set(el.style, "width", "0%");

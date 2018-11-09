@@ -16,6 +16,7 @@ MediaUI.Output.WaitingState = MediaUI.Output.extend({
   },
 
   onWaiting: function() {
+    if (!this.ui.src.value) return this.offWaiting();
     this.$els.forEach(function(element) {
       var $el = elements(element);
       rafer.call($el, "toggleClass", replace("${classprefix}waitingstate-active", this.ui.options), true);
