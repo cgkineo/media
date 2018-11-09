@@ -26,6 +26,9 @@ var MediaUI = Class.extend({
     if (!(this.options instanceof Media.DefaultOptions)) {
       this.options = new Media.DefaultOptions(options);
     }
+
+    Media.changes.hold(this.media);
+
     this.options.add({
       ui: this
     });
@@ -48,6 +51,7 @@ var MediaUI = Class.extend({
       this.startOutputs();
       this.startInputs();
 
+      Media.changes.resume(this.media);
       this.trigger("ready");
     }.bind(this));
 

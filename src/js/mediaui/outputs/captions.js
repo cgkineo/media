@@ -19,7 +19,7 @@ MediaUI.Output.Captions = MediaUI.Output.extend({
 
   setUpListeners: function() {
     this.listenTo(this.ui.media, {
-      texttrackchange: this.onTextTrackChange,
+      "addtexttrack texttrackchange removetexttrack": this.onTextTrackChange,
       cueenter: this.onCueEnter,
       cueexit: this.onCueExit
     });

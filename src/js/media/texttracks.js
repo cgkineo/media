@@ -1,10 +1,11 @@
 Media.Class.TextTracks = Media.Class.extend({
 
-  constructor: function TextTracks(media) {
+  constructor: function TextTracks() {
     this.listenTo(Media, {
       create: this.onCreate,
       timeupdate: this.onTimeUpdate,
-      destroy: this.onDestroy
+      destroy: this.onDestroy,
+      change: this.onChange
     });
   },
 
@@ -23,7 +24,7 @@ Media.Class.TextTracks = Media.Class.extend({
   },
 
   onChange: function(media) {
-    delete media.tracks;
+    this.onDestroy(media);
     this.onCreate(media);
     this.onTimeUpdate(media);
   },

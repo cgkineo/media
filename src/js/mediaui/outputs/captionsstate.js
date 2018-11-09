@@ -9,7 +9,7 @@ MediaUI.Output.CaptionsState = MediaUI.Output.extend({
     if (!this.$els.length) return;
     this.ui = ui;
     this.listenTo(this.ui.media, {
-      texttrackchange: this.onTextTrackChange
+      "addtexttrack texttrackchange removetexttrack": this.onTextTrackChange,
     });
     this.onTextTrackChange();
   },

@@ -1,9 +1,10 @@
 Media.Class.Resize = Media.Class.extend({
 
-  constructor: function Resize(media) {
+  constructor: function Resize() {
     this.listenTo(Media, {
       "created": this.onCreated,
-      "resize change": this.onResize
+      "resize": this.onResize,
+      "change": this.onChange
     });
     this.addEventListeners();
   },
@@ -23,8 +24,12 @@ Media.Class.Resize = Media.Class.extend({
   },
 
   onResize: function(media, event) {
-    if (event.fake) return;
+    if (event.type === "resize" && event.fake) return;
     this.resizeAllPlayers();
+  },
+
+  onChange: function(media, event) {
+    this.triggerMediaResize(media);
   },
 
   onWindowResize$write$bind: function() {

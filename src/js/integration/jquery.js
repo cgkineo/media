@@ -6,7 +6,7 @@ if ($ && $.fn) {
 
   Media.JQueryDefaultOptions = Media.DefaultOptions.extend({
     constructor: function JQueryDefaultOptions() {
-      Media.DefaultOptions.prototype.constructor.apply(this, arguments);
+      Media.DefaultOptions.apply(this, arguments);
     }
   });
   Media.JQueryDefaultOptions.add({
@@ -34,10 +34,10 @@ if ($ && $.fn) {
         item[Media.propName].options.add(options);
         return;
       }
-      options = new Media.JQueryDefaultOptions(options);
-      var media = new Media(item, options);
+      var mediaOptions = new Media.JQueryDefaultOptions(options);
+      var media = new Media(item, mediaOptions);
       if (MediaUI) {
-        new MediaUI(media, options);
+        new MediaUI(media, mediaOptions);
       }
     });
     return $medias;

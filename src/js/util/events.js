@@ -1,6 +1,6 @@
 var EventsInitialize = function(subject) {
-  if (subject.events && subject.trigger) return;
-  if (!subject.events) {
+  if (subject.hasOwnProperty("events") && subject.events && subject.trigger) return;
+  if (!subject.hasOwnProperty("events") || !subject.events) {
     Object.defineProperty(subject, 'events', {
       value: new EventsRegistry(),
       enumerable: false,

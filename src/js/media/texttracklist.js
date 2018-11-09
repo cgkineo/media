@@ -11,7 +11,7 @@ Media.Class.TextTrackList = Media.Class.List.extend({
     this.defineProperties({
       media$write: media
     });
-    this.fetch();
+    delay(this.fetch, 0);
   },
 
   default$get: function() {
@@ -20,7 +20,7 @@ Media.Class.TextTrackList = Media.Class.List.extend({
     });
   },
 
-  fetch$write: function() {
+  fetch$write$bind: function() {
     this.destroy();
     var tracks = {};
     var trackElements = this.media.el.querySelectorAll("track[type='text/vtt']");
@@ -76,10 +76,9 @@ Media.Class.TextTrackList = Media.Class.List.extend({
   },
 
   destroy: function() {
-    for (var i = 0, l = this.length; i < l; i++) {
-      this[i].destroy();
+    for (var i = this.length - 1; i > -1; i--) {
+      this.removeTrack(this[i]);
     }
-    this.length = 0;
     this.stopListening();
   }
 
