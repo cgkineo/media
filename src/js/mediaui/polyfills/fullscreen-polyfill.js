@@ -195,6 +195,14 @@
   function fixFullScreenElement() {
     if (applied.fullscreenElement) return;
     applied.fullscreenElement = true;
+    var fullscreenElement = Object.getOwnPropertyDescriptor(Document.prototype, "fullscreenElement") || {
+      get: function() {
+        return document[api["fullscreenElement"]];
+      },
+      set: function(value) {
+        document[api["fullscreenElement"]] = value;
+      }
+    };
     Object.defineProperty(document, "fullscreenElement", {
       get: function() {
         if (useFullWindow) {
@@ -202,7 +210,10 @@
           return fullWindowElement;
         }
         debug && console.log("get fullscreenElement", document[api["fullscreenElement"]]);
-        return document[api["fullscreenElement"]];
+        return fullscreenElement.get.apply(document);
+      },
+      set: function(value) {
+        return fullscreenElement.set.apply(document, value);
       }
     });
   }
@@ -210,6 +221,11 @@
   function fixFullScreenEnabled() {
     if (applied.fullscreenEnabled) return;
     applied.fullscreenEnabled = true;
+    var fullscreenEnabled = Object.getOwnPropertyDescriptor(Document.prototype, "fullscreenEnabled") || {
+      get: function() {
+        return document[api["fullscreenEnabled"]];
+      }
+    };
     Object.defineProperty(document, "fullscreenEnabled", {
       get: function() {
         if (useFullWindow) {
@@ -217,7 +233,7 @@
           return true;
         }
         debug && console.log("get fullscreenEnabled", document[api["fullscreenEnabled"]]);
-        return document[api["fullscreenEnabled"]];
+        return fullscreenEnabled.get.apply(document);
       }
     });
   }
@@ -225,6 +241,7 @@
   function fixExitFullScreen() {
     if (applied.exitFullscreen) return;
     applied.exitFullscreen = true;
+    var exitFullscreen = document[api.exitFullscreen];
     document.exitFullscreen = function() {
       debug && console.log("exitFullscreen");
       if (useFullWindow) {
@@ -232,13 +249,14 @@
         document.dispatchEvent(createEvent("fullscreenchange"));
         return;
       }
-      return document[api.exitFullscreen].apply(this, arguments);
+      return exitFullscreen.apply(document, arguments);
     }
   }
 
   function fixRequestFullScreen() {
     if (applied.requestFullscreen) return;
     applied.requestFullscreen = true;
+    var requestFullscreen = Element.prototype[api.requestFullscreen];
     Element.prototype.requestFullscreen = function() {
       requestByFullscreen = true;
       debug && console.log("requestFullscreen", this);
@@ -247,11 +265,12 @@
         document.dispatchEvent(createEvent("fullscreenchange"));
         return;
       }
-      return this[api.requestFullscreen].apply(this, arguments);
+      return requestFullscreen.apply(this, arguments);
     };
   }
 
   function fixOnFullScreenChange() {
+    if (api.onfullscreenchange === "onfullscreenchange") return;
     if (applied.onfullscreenchange) return;
     applied.onfullscreenchange = true;
     Object.defineProperty(document, "onfullscreenchange", {
@@ -267,6 +286,7 @@
   }
 
   function fixOnFullScreenError() {
+    if (api.onfullscreenerror === "onfullscreenerror") return;
     if (applied.onfullscreenerror) return;
     applied.onfullscreenerror = true;
     Object.defineProperty(document, "onfullscreenerror", {
@@ -291,7 +311,8 @@
   document.addEventListener("fullscreenerror", function(event) {
     requestByFullscreen = false;
     debug && console.log("fullscreenerror", document.fullscreenElement, event);
-    useFullWindow = true;    document.exitFullscreen && document.exitFullscreen();
+    useFullWindow = true;
+    document.exitFullscreen && document.exitFullscreen();
   });
 
   check(document, "fullscreenElement");

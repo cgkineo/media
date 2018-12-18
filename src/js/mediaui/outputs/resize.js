@@ -37,7 +37,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
 
   onResize$bind: function(event) {
     var uiDimensions = this.getUIDimensions();
-    var uiOffsetParent = this.ui.el.offsetParent || window;
+    var uiOffsetParent = this.ui.fullscreen.isActive ? window : this.ui.el.offsetParent || window;
     var uiParentDimensions = new Media.Class.Dimensions(uiOffsetParent);
     var uiConfig = uiDimensions[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal'];
 
@@ -72,7 +72,7 @@ MediaUI.Output.Resize = MediaUI.Output.extend({
       return item === this.ui.el;
     }.bind(this)));
     var sourceOffsetParent = isUISourceParent ? this.ui.el.offsetParent : this.ui.source.offsetParent;
-    var sourceParentDimensions =  new Media.Class.Dimensions(sourceOffsetParent || window);
+    var sourceParentDimensions =  new Media.Class.Dimensions(this.ui.fullscreen.isActive ? window : sourceOffsetParent || window);
     var sourceConfig = event[this.ui.fullscreen.isActive ? 'fullscreen' : 'normal'];
 
     // Source config exceptions
