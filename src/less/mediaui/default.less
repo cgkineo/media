@@ -193,9 +193,11 @@
     }
 
     &.mediaui--playpausestate-playing {
-      .mediaui--bigplaypause {
-        visibility: hidden;
-        cursor: none !important;
+      &:not(.mediaui--engagestate-engaged) {
+        .mediaui--bigplaypause {
+          visibility: hidden;
+          cursor: none !important;
+        }
       }
       .mediaui--bigplaypause:before,
       .mediaui--littleplaypause:before {

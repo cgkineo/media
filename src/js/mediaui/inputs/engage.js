@@ -85,6 +85,7 @@ MediaUI.Input.Engage = MediaUI.Input.extend({
   },
 
   startDisengage: function() {
+    if (Media.device.wasUsingTouchRecently) return;
     if (!this.isEngaged) return;
     if (this.engageHandle) this.stopDisengage();
     this.engageHandle = setTimeout(this.disengage, this.ui.options.uiengagetimeout || 2000);
